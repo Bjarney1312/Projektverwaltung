@@ -17,6 +17,7 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.Theme;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.ButtonSwitchTheme;
 
 @PWA(name = "Projektverwaltung", shortName = "PV", enableInstallPrompt = false)
 //@Theme(themeFolder = "myapp")
@@ -50,6 +51,7 @@ public class MainView extends AppLayout {
 //        logoFH.setHeight("50px");
 
         Label title = new Label("Projektverwaltung");
+        ButtonSwitchTheme switchTheme = new ButtonSwitchTheme();
 
         Anchor logout = new Anchor("logout", "Logout");
 //
@@ -59,7 +61,7 @@ public class MainView extends AppLayout {
 
         Tabs tabs = new Tabs (new Tab(logout));
 
-        HorizontalLayout header = new HorizontalLayout(title, tabs);
+        HorizontalLayout header = new HorizontalLayout(title, tabs, switchTheme);
         header.addClassName("header");
         header.setWidth("100%");
 

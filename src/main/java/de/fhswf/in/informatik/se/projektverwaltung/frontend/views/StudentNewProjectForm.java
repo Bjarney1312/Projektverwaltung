@@ -1,20 +1,28 @@
 package de.fhswf.in.informatik.se.projektverwaltung.frontend.views;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.*;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NewContactDialog;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NewProjectRequestDialog;
 
 @Route(value = "projektantrag_student/:module", layout = MainView.class)
 @PageTitle("Projektantrag")
@@ -25,6 +33,10 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
     private Label moduleText;
 
     public StudentNewProjectForm(){
+
+         /*-----------------------------------------------------------------------------------------------------------
+                                                      Oberer Teil
+         ------------------------------------------------------------------------------------------------------------*/
 
         H1 title = new H1("Projekt Details");
 
@@ -66,15 +78,93 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
             notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
         });
 
-
-        FormLayout projectDetails = new FormLayout(projectTitle, projectSketch, projectBackground, projectDescription, upload);
-        projectDetails.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP),
+        FormLayout projectDetailsTop = new FormLayout(projectTitle, projectSketch, projectBackground, projectDescription, upload);
+        projectDetailsTop.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP),
                 new FormLayout.ResponsiveStep("500px", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP));
-        projectDetails.setClassName("student-new-project-form-upperformlayout");
+        projectDetailsTop.setClassName("student-new-project-form-upperformlayout");
+
+        /*-----------------------------------------------------------------------------------------------------------
+                                                      Unterer Teil
+         ------------------------------------------------------------------------------------------------------------*/
+
+        H2 titleGroup = new H2("Gruppe");
+        titleGroup.setClassName("test");
+        H2 titleContact = new H2("Ansprechpartner");
+        titleContact.setClassName("test");
+        H2 titleCompany = new H2("Unternehmen");
+        titleCompany.setClassName("test");
+
+        TextField groupMemberOneFirstName = new TextField();
+        groupMemberOneFirstName.setLabel("Gruppenmitglied 1");
+        groupMemberOneFirstName.setPlaceholder("Vorname");
+        TextField groupMemberOneLastName = new TextField();
+        groupMemberOneLastName.setPlaceholder("Nachname");
+
+        TextField groupMemberTwoFirstName = new TextField();
+        groupMemberTwoFirstName.setLabel("Gruppenmitglied 2");
+        groupMemberTwoFirstName.setPlaceholder("Vorname");
+        TextField groupMemberTwoLastName = new TextField();
+        groupMemberTwoLastName.setPlaceholder("Nachname");
+
+        TextField groupMemberThreeFirstName = new TextField();
+        groupMemberThreeFirstName.setLabel("Gruppenmitglied 3");
+        groupMemberThreeFirstName.setPlaceholder("Vorname");
+        TextField groupMemberThreeLastName = new TextField();
+        groupMemberThreeLastName.setPlaceholder("Nachname");
 
 
 
-        Div div = new Div(title,moduleText, projectDetails);
+        Select<String> selectContact = new Select<>();
+        selectContact.setLabel("Ansprechpartner");
+        selectContact.setItems("Tobias Holke", "Matthias Faulstich");
+
+        Select<String> selectCompany = new Select<>();
+        selectCompany.setLabel("Unternehmen");
+        selectCompany.setItems("FHSWF");
+
+        Button buttonNewContact = new Button();
+        buttonNewContact.setClassName("student-new-project-form-newcontactbutton");
+        buttonNewContact.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        Icon icon = new Icon(VaadinIcon.PLUS);
+        buttonNewContact.setIcon(icon);
+        buttonNewContact.addClickListener(newProjectEvent -> {
+            NewContactDialog dialog = new NewContactDialog();
+            dialog.open();
+        });
+
+        FormLayout projectDetailsBottom = new FormLayout(
+                titleGroup, titleContact, buttonNewContact,
+                groupMemberOneFirstName, groupMemberOneLastName, selectContact,
+                groupMemberTwoFirstName, groupMemberTwoLastName, titleCompany,
+                groupMemberThreeFirstName, groupMemberThreeLastName,   selectCompany
+                );
+
+        projectDetailsBottom.setColspan(titleGroup, 2);
+        projectDetailsBottom.setColspan(titleCompany, 2);
+        projectDetailsBottom.setColspan(selectCompany, 2);
+        projectDetailsBottom.setColspan(selectContact, 2);
+
+        projectDetailsBottom.setResponsiveSteps(
+                new FormLayout.ResponsiveStep("0", 4, FormLayout.ResponsiveStep.LabelsPosition.TOP),
+                new FormLayout.ResponsiveStep("500px", 4, FormLayout.ResponsiveStep.LabelsPosition.TOP));
+
+
+        HorizontalLayout buttonBox = new HorizontalLayout();
+        buttonBox.setClassName("student-new-project-form-buttonbox");
+
+        Button buttonChoose = new Button("Speichern");
+        buttonChoose.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        buttonChoose.setClassName("student-new-project-form-button");
+//        buttonChoose.addClickListener(saveContactEvent -> this.close());
+
+        Button buttonCancel = new Button("Abbrechen");
+        buttonCancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        buttonCancel.setClassName("student-new-project-form-button");
+        buttonCancel.addClickListener(dialogCloseEvent -> UI.getCurrent().navigate(StudentProjectOverview.class));
+
+        buttonBox.add(buttonChoose, buttonCancel);
+
+        Div div = new Div(title, moduleText, projectDetailsTop, projectDetailsBottom, buttonBox);
         div.setClassName("student-new-project-form");
         add(div);
     }

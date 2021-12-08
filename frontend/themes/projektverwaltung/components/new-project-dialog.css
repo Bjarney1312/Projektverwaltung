@@ -1,0 +1,23 @@
+.new-project-dialog-buttons{
+    width: 200px;
+    margin-top: 20px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.new-project-dialog-buttonbox{
+    margin-left: 15px;
+}
+
+.new-project-dialog-title{
+    margin-top: 15px;
+    font-size: 15pt;
+}
+
+.new-project-dialog-grid{
+    margin-top: 15px;
+}
+
+.new-project-dialog-select{
+    width: 450px;
+}

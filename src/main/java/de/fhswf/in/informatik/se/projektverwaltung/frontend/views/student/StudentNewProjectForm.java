@@ -1,4 +1,4 @@
-package de.fhswf.in.informatik.se.projektverwaltung.frontend.views;
+package de.fhswf.in.informatik.se.projektverwaltung.frontend.views.student;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -21,11 +21,11 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.*;
-import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NewContactDialog;
-import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NewProjectRequestDialog;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.NewContactDialog;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 
 @Route(value = "projektantrag_student/:module", layout = MainView.class)
-@PageTitle("Projektantrag")
+@PageTitle("Projektverwaltung | Projektantrag")
 @CssImport("/themes/projektverwaltung/views/student-new-project-form.css")
 public class StudentNewProjectForm extends VerticalLayout implements BeforeEnterObserver, AfterNavigationObserver {
 

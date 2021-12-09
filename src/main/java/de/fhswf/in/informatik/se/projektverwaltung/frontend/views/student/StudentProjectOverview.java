@@ -1,4 +1,4 @@
-package de.fhswf.in.informatik.se.projektverwaltung.frontend.views;
+package de.fhswf.in.informatik.se.projektverwaltung.frontend.views.student;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -11,13 +11,11 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
-import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NewProjectRequestDialog;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.NewProjectRequestDialog;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 
-
-@RouteAlias(value = "", layout = MainView.class)// später ändern, wenn Rollen dazu kommen
-@Route(value = "projektübersicht_student", layout = MainView.class)
-@PageTitle("Projektübersicht")
+@Route(value = "projektuebersicht_student", layout = MainView.class)
+@PageTitle("Projektverwaltung | Projektübersicht")
 @CssImport("/themes/projektverwaltung/views/student-project-overview.css")
 public class StudentProjectOverview extends VerticalLayout {
 

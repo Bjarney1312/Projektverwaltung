@@ -1,4 +1,4 @@
-package de.fhswf.in.informatik.se.projektverwaltung.frontend.components;
+package de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;

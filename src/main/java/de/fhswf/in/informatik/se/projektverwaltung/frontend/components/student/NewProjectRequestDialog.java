@@ -1,4 +1,4 @@
-package de.fhswf.in.informatik.se.projektverwaltung.frontend.components;
+package de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -12,7 +12,7 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.RouteParameters;
-import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.StudentNewProjectForm;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.student.StudentNewProjectForm;
 
 @CssImport("/themes/projektverwaltung/components/new-project-dialog.css")
 public class NewProjectRequestDialog extends Dialog {

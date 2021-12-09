@@ -1,27 +1,34 @@
 package de.fhswf.in.informatik.se.projektverwaltung.backend.entities;
 
+//TODO: ManyToMany Enum?
+
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.ModuleEnum;
+
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
-public class Student {
+public class ModuleCoordinator {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	private String username;
 	private String firstName;
 	private String lastName;
 
-	@ManyToMany(mappedBy = "students")
-	private Set<Project> projects;
+	@ElementCollection
+	private List<ModuleEnum> moduleEnum;
 
-	public Student(String username, String firstName, String lastName) {
+	public ModuleCoordinator(String username, String firstName, String lastName, List<ModuleEnum> moduleEnum) {
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.moduleEnum = moduleEnum;
 	}
 
-	public Student() {
+	public ModuleCoordinator() {
 
 	}
 
@@ -41,7 +48,7 @@ public class Student {
 		return lastName;
 	}
 
-	public Set<Project> getProjects() {
-		return projects;
+	public List<ModuleEnum> getModul() {
+		return moduleEnum;
 	}
 }

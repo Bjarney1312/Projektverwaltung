@@ -15,6 +15,9 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.*;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Student;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.services.StudentService;
+
 
 @Route(value = "projektantrag_student/:module", layout = MainView.class)
 @PageTitle("Projektantrag")

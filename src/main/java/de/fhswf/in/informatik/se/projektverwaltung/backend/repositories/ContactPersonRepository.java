@@ -4,4 +4,6 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.ContactPerso
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ContactPersonRepository extends JpaRepository<ContactPerson,Long> {
+
+    ContactPerson findContactPersonByLastNameAndFirstName(String lastname, String firstname);
 }

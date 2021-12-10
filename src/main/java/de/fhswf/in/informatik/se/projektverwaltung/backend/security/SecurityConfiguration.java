@@ -87,6 +87,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .authorities("STUDENT")
                         .build();
 
+        UserDetails student3 =
+                User
+                        .withUsername("mapet003")
+                        .password("{noop}password")
+                        .roles("STUDENT")
+                        .authorities("STUDENT")
+                        .build();
+
         UserDetails dozent1 =
                 User
                         .withUsername("alnie001")
@@ -95,7 +103,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .authorities("DOZENT")
                         .build();
 
-        return new InMemoryUserDetailsManager(student1, student2, dozent1);
+        return new InMemoryUserDetailsManager(student1, student2,student3, dozent1);
     }
 
     /**

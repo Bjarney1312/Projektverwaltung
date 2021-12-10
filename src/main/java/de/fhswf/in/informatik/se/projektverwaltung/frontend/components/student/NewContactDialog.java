@@ -11,6 +11,15 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 
+/**
+ * Die Klasse NewContactDialog öffnet in der View zum Erstellen eines
+ * Projektantrags bei Bedarf einen Dialog, um einen neuen Ansprechpartner
+ * anzulegen, falls dieser noch nicht existiert. Zusätzlich kann ein neues
+ * Unternehmen zu diesem Ansprechpartner erfasst werden, sollte der neue
+ * Ansprechpartner zu keinem bereits bestehendem Unternehmen gehören.
+ *
+ * @author Ivonne Kneißig & Ramon Günther
+ */
 @CssImport("/themes/projektverwaltung/components/new-contact-dialog.css")
 public class NewContactDialog extends Dialog {
 

@@ -11,29 +11,64 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Student;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.services.StudentService;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.NewProjectRequestDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+/**
+ * Die Klasse StudentProjectOverview ist die Startseite für Studenten
+ * und zeigt eine Übersicht seiner aktiven Projekte. Außerdem kann er
+ * einen neuen Projektantrag stellen oder sich die Details eines
+ * bestehenden Projekts anzeigen lassen.
+ *
+ * @author Ivonne Kneißig & Ramon Günther
+ */
 @Route(value = "projektuebersicht_student", layout = MainView.class)
 @PageTitle("Projektverwaltung | Projektübersicht")
 @CssImport("/themes/projektverwaltung/views/student/student-project-overview.css")
 public class StudentProjectOverview extends VerticalLayout {
 
-    public StudentProjectOverview(){
+    private final ProjectService projectService;
+
+    private final StudentService studentService;
+
+    public StudentProjectOverview(ProjectService projectService, StudentService studentService){
+
+        this.projectService = projectService;
+        this.studentService = studentService;
+
         H1 title = new H1("Projektverwaltung");
         title.setId("title-projektverwaltung-student");
 
-        Grid<String> grid = new Grid<>();
+        Grid<Project> grid = new Grid<>();
         grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
         grid.setClassName("student-project-overview-grid");
 
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Student student = studentService.getStudentByUsername(username);
+
+        grid.setItems(this.projectService.getAllProjectsByStudents(student));
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.addColumn(projectTitle -> projectTitle.getProjectDescription().getTitle()).setHeader("Projekttitel");
+
+        grid.addColumn(Project::getModuleEnum).setHeader("Modul");
+        grid.addColumn(Project::getStatus).setHeader("Projektstatus");
+        grid.addColumn(moduleCoordinator ->
+                moduleCoordinator.getModuleCoordinator().getLastName()
+                        + ", " + moduleCoordinator.getModuleCoordinator().getFirstName()).setHeader("Modulbeauftragter");
+        grid.addColumn(contactPerson ->
+                contactPerson.getContactPerson().getLastName()
+                        + ", " + contactPerson.getContactPerson().getFirstName()).setHeader("Ansprechpartner");
 
         Button buttonNewProject = new Button("Projektvorschlag");
         buttonNewProject.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonNewProject.setClassName("student-projekt-overview-button");
         buttonNewProject.addClickListener(newProjectEvent -> {
-            NewProjectRequestDialog dialog = new NewProjectRequestDialog();
+            NewProjectRequestDialog dialog = new NewProjectRequestDialog(projectService);
             dialog.open();
         });
 
@@ -49,6 +84,4 @@ public class StudentProjectOverview extends VerticalLayout {
         div.setClassName("student-project-overview");
         add(div);
     }
-
-
 }

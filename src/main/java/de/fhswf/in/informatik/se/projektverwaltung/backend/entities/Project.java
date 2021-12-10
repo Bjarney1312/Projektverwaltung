@@ -32,7 +32,7 @@ public class Project {
 
 	private Status status;
 	private String comment;
-	private ModuleEnum moduleEnum;
+	private String moduleEnum;
 
 	public Project(ContactPerson contactPerson, Set<Student> students, ModuleCoordinator moduleCoordinator, ProjectDescription projectDescription, Status status, String comment, ModuleEnum moduleEnum) {
 		if(students.size() <= 1 || students.size() > 3 ) {
@@ -45,14 +45,15 @@ public class Project {
 		this.presentationDates = new PresentationDates(null,null);
 		this.status = status;
 		this.comment = comment;
-		this.moduleEnum = moduleEnum;
+		this.moduleEnum = moduleEnum.label;
 	}
 
-	public Project(ModuleEnum moduleEnum) {
-		this.moduleEnum = moduleEnum;
+	public Project(ModuleEnum moduleEnum, ModuleCoordinator moduleCoordinator) {
+		this.moduleEnum = moduleEnum.label;
 		this.presentationDates = new PresentationDates(null,null);
 		this.projectDescription = new ProjectDescription();
 		this.status = Status.FREI;
+		this.moduleCoordinator = moduleCoordinator;
 	}
 
 	public Project() {
@@ -90,7 +91,7 @@ public class Project {
 		return comment;
 	}
 
-	public ModuleEnum getModuleEnum() {
+	public String getModuleEnum() {
 		return moduleEnum;
 	}
 
@@ -123,6 +124,6 @@ public class Project {
 	}
 
 	public void setModuleEnum(ModuleEnum moduleEnum) {
-		this.moduleEnum = moduleEnum;
+		this.moduleEnum = moduleEnum.label;
 	}
 }

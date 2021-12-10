@@ -15,7 +15,14 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 
-
+/**
+ * Die Klasse DozentProjectOverview ist die Startseite für Dozenten und zeigt
+ * eine Übersicht aller Projekte des Dozenten. Er kann dabei nach laufen Projekten,
+ * Projektanfragen oder noch freien Projektplätzen filtern. Außerdem kann er Anfragen
+ * bearbeiten, neue Projektplätze freigeben oder Termine zu Projekten vergeben.
+ *
+ * @author Ivonne Kneißig & Ramon Günther
+ */
 @Route(value = "projektuebersicht_dozent", layout = MainView.class)
 @PageTitle("Projektverwaltung | Projektübersicht")
 @CssImport("/themes/projektverwaltung/views/dozent/dozent-project-overview.css")

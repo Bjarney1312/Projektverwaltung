@@ -6,6 +6,7 @@
 }
 
 .new-project-dialog-buttonbox{
+    margin-top: 20px;
     margin-left: 15px;
 }
 
@@ -20,4 +21,11 @@
 
 .new-project-dialog-select{
     width: 450px;
+    margin-bottom: 30px;
+}
+
+.new-project-dialog-label{
+    width: 350px;
+    margin-left: 5px;
+
 }

@@ -6,8 +6,9 @@ import com.vaadin.flow.router.*;
 
 /**
  * Die Klasse LoginView erstellt den Login der Applikation.
+ *
+ * @author Ivonne Kneißig & Ramon Günther
  */
-
 @RouteAlias(value = "")
 @Route("login")
 @PageTitle("Projektverwaltung | Login")
@@ -27,7 +28,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         add(login);
     }
-
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {

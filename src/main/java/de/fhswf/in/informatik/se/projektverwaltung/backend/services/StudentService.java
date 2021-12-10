@@ -27,4 +27,23 @@ public class StudentService {
         return repository.getById(id);
     }
 
+    public Student getStudentByUsername(String username){
+        try {
+            return  repository.findStudentByUsername(username);
+        }
+        catch(Exception e){
+            throw new IllegalArgumentException("Es konnte kein Nutzer mit diesem Nutzernamen gefunden werden.");
+        }
+    }
+
+    public Student getStudentByFhMail(String fhMail){
+
+        Student student = repository.findStudentByFhMail(fhMail);
+
+        if(student == null){
+            throw new IllegalArgumentException("Es konnte kein Nutzer mit dieser FH-Mail gefunden werden.");
+        }
+        return  student;
+    }
+
 }

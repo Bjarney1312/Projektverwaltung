@@ -26,7 +26,7 @@ import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 
 @Route(value = "projektantrag_student/:module", layout = MainView.class)
 @PageTitle("Projektverwaltung | Projektantrag")
-@CssImport("/themes/projektverwaltung/views/student-new-project-form.css")
+@CssImport("/themes/projektverwaltung/views/student/student-new-project-form.css")
 public class StudentNewProjectForm extends VerticalLayout implements BeforeEnterObserver, AfterNavigationObserver {
 
     private String module;

@@ -1,0 +1,28 @@
+.dozent-project-overview{
+    margin: auto;
+}
+
+.dozent-project-overview-grid{
+    width: 1000px;
+    margin: auto;
+}
+
+.dozent-projekt-overview-button{
+    width: 200px;
+    margin-top: 50px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.dozent-projekt-overview-buttonbox{
+    margin-left: 90px;
+}
+
+.dozent-project-overview-select{
+    width: 400px;
+    margin-bottom: 20px;
+}
+
+.dozent-project-overview-radio{
+    margin-left: 150px;
+}

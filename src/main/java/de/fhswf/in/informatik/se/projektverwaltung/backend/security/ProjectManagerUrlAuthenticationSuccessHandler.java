@@ -58,7 +58,7 @@ public class ProjectManagerUrlAuthenticationSuccessHandler
 
         Map<String, String> roleTargetUrlMap = new HashMap<>();
         roleTargetUrlMap.put("STUDENT", "/projektuebersicht_student");
-        roleTargetUrlMap.put("DOZENT", "/login");
+        roleTargetUrlMap.put("DOZENT", "/projektuebersicht_dozent");
 
         final Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         for (final GrantedAuthority grantedAuthority : authorities) {

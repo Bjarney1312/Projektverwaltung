@@ -16,7 +16,7 @@ import com.vaadin.flow.theme.lumo.Lumo;
  * @author Ramon Günther
  */
 
-@CssImport("/themes/projektverwaltung/views/student-new-project-form.css")
+@CssImport("/themes/projektverwaltung/views/student/student-new-project-form.css")
 public class ButtonSwitchTheme extends Button {
 
     private final Icon sun;

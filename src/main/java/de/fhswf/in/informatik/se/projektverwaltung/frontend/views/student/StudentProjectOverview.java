@@ -16,7 +16,7 @@ import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 
 @Route(value = "projektuebersicht_student", layout = MainView.class)
 @PageTitle("Projektverwaltung | Projektübersicht")
-@CssImport("/themes/projektverwaltung/views/student-project-overview.css")
+@CssImport("/themes/projektverwaltung/views/student/student-project-overview.css")
 public class StudentProjectOverview extends VerticalLayout {
 
     public StudentProjectOverview(){

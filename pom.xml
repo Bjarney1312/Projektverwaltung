@@ -15,7 +15,7 @@
     <description>Projektverwaltung</description>
     <properties>
         <java.version>17</java.version>
-        <vaadin.version>14.7.7</vaadin.version>
+        <vaadin.version>14.7.5</vaadin.version>
     </properties>
     <dependencies>
         <dependency>

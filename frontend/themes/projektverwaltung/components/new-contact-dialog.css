@@ -1,0 +1,20 @@
+.new-contact-dialog-button{
+    width: 200px;
+    margin-top: 20px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.new-contact-dialog-buttonbox{
+    margin-left: 15px;
+}
+
+.new-contact-dialog-title{
+    margin-top: 15px;
+    font-size: 15pt;
+}
+
+.new-contact-dialog-companybutton{
+    width: 450px;
+    margin-top: 30px;
+}

@@ -1,5 +1,6 @@
 package de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobjects;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
@@ -8,7 +9,16 @@ public class ProjectDescription {
 	private String title;
 	private String sketch;
 	private String descriptionBackground;
-	private byte descriptionProjectContent;
+
+	@Column(length = 10485760)
+	private byte[] descriptionProjectContent;
+
+	public ProjectDescription(String title, String sketch, String descriptionBackground, byte[] descriptionProjectContent) {
+		this.title = title;
+		this.sketch = sketch;
+		this.descriptionBackground = descriptionBackground;
+		this.descriptionProjectContent = descriptionProjectContent;
+	}
 
 	public ProjectDescription() {
 	}
@@ -25,7 +35,7 @@ public class ProjectDescription {
 		return descriptionBackground;
 	}
 
-	public byte getDescriptionProjectContent() {
+	public byte[] getDescriptionProjectContent() {
 		return descriptionProjectContent;
 	}
 
@@ -41,7 +51,7 @@ public class ProjectDescription {
 		this.descriptionBackground = descriptionBackground;
 	}
 
-	public void setDescriptionProjectContent(byte descriptionProjectContent) {
+	public void setDescriptionProjectContent(byte[] descriptionProjectContent) {
 		this.descriptionProjectContent = descriptionProjectContent;
 	}
 }

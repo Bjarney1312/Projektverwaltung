@@ -6,7 +6,8 @@ public enum Status {
 	ZUGELASSEN("Zugelassen"),
 	ABGELEHNT("Abgelehnt"),
 	ERGAENZUNG ("Ergänzung"),
-	ANFRAGE ("Anfrage");
+	ANFRAGE ("Anfrage"),
+	FREI("Frei");
 
 	public final String label;
 

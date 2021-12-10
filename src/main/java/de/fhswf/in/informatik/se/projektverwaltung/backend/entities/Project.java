@@ -34,15 +34,25 @@ public class Project {
 	private String comment;
 	private ModuleEnum moduleEnum;
 
-	public Project(ContactPerson contactPerson, Set<Student> students, ModuleCoordinator moduleCoordinator, Status status, String comment, ModuleEnum moduleEnum) {
+	public Project(ContactPerson contactPerson, Set<Student> students, ModuleCoordinator moduleCoordinator, ProjectDescription projectDescription, Status status, String comment, ModuleEnum moduleEnum) {
+		if(students.size() <= 1 || students.size() > 3 ) {
+			throw new IllegalArgumentException("Fehler: Die Gruppengröße muss im Bereich 2-3 liegen");
+		}
 		this.contactPerson = contactPerson;
 		this.students = students;
 		this.moduleCoordinator = moduleCoordinator;
-		this.projectDescription = new ProjectDescription();
-		this.presentationDates = new PresentationDates();
+		this.projectDescription = projectDescription;
+		this.presentationDates = new PresentationDates(null,null);
 		this.status = status;
 		this.comment = comment;
 		this.moduleEnum = moduleEnum;
+	}
+
+	public Project(ModuleEnum moduleEnum) {
+		this.moduleEnum = moduleEnum;
+		this.presentationDates = new PresentationDates(null,null);
+		this.projectDescription = new ProjectDescription();
+		this.status = Status.FREI;
 	}
 
 	public Project() {
@@ -86,5 +96,33 @@ public class Project {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public void setPresentationDates(PresentationDates presentationDates) {
+		this.presentationDates = presentationDates;
+	}
+
+	public void setContactPerson(ContactPerson contactPerson) {
+		this.contactPerson = contactPerson;
+	}
+
+	public void setStudents(Set<Student> students) {
+		this.students = students;
+	}
+
+	public void setModuleCoordinator(ModuleCoordinator moduleCoordinator) {
+		this.moduleCoordinator = moduleCoordinator;
+	}
+
+	public void setProjectDescription(ProjectDescription projectDescription) {
+		this.projectDescription = projectDescription;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public void setModuleEnum(ModuleEnum moduleEnum) {
+		this.moduleEnum = moduleEnum;
 	}
 }

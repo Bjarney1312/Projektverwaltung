@@ -1,6 +1,7 @@
 package de.fhswf.in.informatik.se.projektverwaltung.backend.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Entity
 public class ContactPerson {

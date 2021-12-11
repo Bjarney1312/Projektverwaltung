@@ -3,6 +3,13 @@ package de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobject
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+/**
+ * Die Klasse ProjectDescription enthält die Details zu einem Projekt.
+ * Dazu gehören der Titel, eine kurze Skizze, der Projekthintergrund und
+ * eine ausführlichere Projektbeschreibung.
+ *
+ * @author Ramon Günther & Ivonne Kneißig
+ */
 @Embeddable
 public class ProjectDescription {
 

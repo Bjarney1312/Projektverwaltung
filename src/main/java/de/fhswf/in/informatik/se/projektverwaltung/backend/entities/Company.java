@@ -5,6 +5,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Die Klasse Company enthält alle Informationen zu einem Unternehmen,
+ * zu dem der Ansprechpartner eines Projekts gehört. Es werden der
+ * Unternehmensname und die Adresse gespeichert.
+ *
+ * @author Ramon Günther & Ivonne Kneißig
+ */
 @Entity
 public class Company {
 

@@ -39,11 +39,9 @@ public class NewContactDialog extends Dialog {
 
         TextField contactMail = new TextField();
         contactMail.setLabel("Email");
-//        contactMail.setPlaceholder("Email");
 
         TextField contactPhone = new TextField();
         contactPhone.setLabel("Telefon");
-//        contactPhone.setPlaceholder("Telefon");
 
         H1 titleCompany = new H1("Neues Unternehmen");
         titleCompany.setClassName("new-contact-dialog-title");
@@ -54,15 +52,12 @@ public class NewContactDialog extends Dialog {
 
         TextField companyAddress = new TextField();
         companyAddress.setLabel("Straße/Hausnummer");
-//        companyAddress.setPlaceholder("Straße/Hausnummer");
 
         TextField companyPlace = new TextField();
         companyPlace.setLabel("Postleitzahl/Ort");
-//        companyPlace.setPlaceholder("Ort");
 
         TextField companyPostal = new TextField();
         companyPostal.setLabel("Postleitzahl/Ort");
-//        companyPostal.setPlaceholder("Postleitzahl");
 
         Select<String> selectCompany = new Select<>();
         selectCompany.setLabel("Unternehmen");

@@ -1,18 +1,22 @@
 package de.fhswf.in.informatik.se.projektverwaltung.backend.services;
 
-import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Company;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.ModuleCoordinator;
-import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Student;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.ModuleEnum;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.repositories.ModuleCoordinatorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Die Klasse ModuleCoordinatorService implementiert primär die Methoden aus dem Interface @{@link ModuleCoordinatorRepository}
+ * um diese im Frontend dann verwenden zu können.
+ *
+ * @author  Ramon Günther & Ivonne Kneißig
+ */
 @Service
 public class ModuleCoordinatorService {
 
-    private ModuleCoordinatorRepository repository;
+    private final ModuleCoordinatorRepository repository;
 
     ModuleCoordinatorService(ModuleCoordinatorRepository repository){
         this.repository = repository;
@@ -31,7 +35,7 @@ public class ModuleCoordinatorService {
     }
 
     public ModuleCoordinator getModuleCoordinatorByModule(ModuleEnum moduleEnum){
-        return  repository.findModuleCoordinatorByModuleEnum(moduleEnum);
+        return repository.findModuleCoordinatorByModuleEnum(moduleEnum);
     }
 
 }

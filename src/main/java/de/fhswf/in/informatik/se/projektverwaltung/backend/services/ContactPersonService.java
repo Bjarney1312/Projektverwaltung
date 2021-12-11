@@ -1,23 +1,23 @@
 package de.fhswf.in.informatik.se.projektverwaltung.backend.services;
 
-import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Company;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.ContactPerson;
-import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Student;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.repositories.ContactPersonRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+
+/**
+ * Die Klasse ContactPersonService implementiert primär die Methoden aus dem Interface @{@link ContactPersonRepository}
+ * um diese im Frontend dann verwenden zu können.
+ *
+ * @author  Ramon Günther & Ivonne Kneißig
+ */
 @Service
 public class ContactPersonService {
 
-    private static final String ADDRESS_PATTERN = "(?<lastname>[A-Za-z_äÄöÖüÜß\\s]+) ([,] (?<firstname>A-Za-z_äÄöÖüÜß\\s]+)";
-
-    private ContactPersonRepository repository;
+    private final ContactPersonRepository repository;
 
     public ContactPersonService(ContactPersonRepository repository) {
         this.repository = repository;
@@ -35,6 +35,11 @@ public class ContactPersonService {
         return repository.getById(id);
     }
 
+    /**
+     * Die Methode findet alle im System angelegten Ansprechpartner
+     *
+     * @return Liste aus Namen der vorhandenen Ansprechpartner
+     */
     public List<String> getAllContactPersonNames(){
         List<ContactPerson> contacts = repository.findAll();
         List<String> contactNames = new ArrayList<>();
@@ -44,27 +49,24 @@ public class ContactPersonService {
         return contactNames;
     }
 
-    //TODO: Sicherer machen und so mit Regex
+    /**
+     * Die Methode findet einen Ansprechpartner anhand des Vor- & Nachnamens.
+     *
+     * @param name kompletter Name
+     * @return Ansprechpartner
+     */
     public ContactPerson getContactPersonByLastNameAndFirstName(String name){
         String[] names = name.replace(",", " ").split(" ");
         System.out.println(names[0]);
         String lastname = names[0];
         String firstname = names[2];
-
-//        Pattern pattern = Pattern.compile(ADDRESS_PATTERN);
-//        Matcher addressMatcher = pattern.matcher(name.replace(",", " "));
-
-//            addressMatcher.find();
-//            lastname = addressMatcher.group("strasse").trim();
-//            firstname = addressMatcher.group("hausnummer").trim();
-
-        try { //TODO vllt gehts doch ohne try catch
+        try {
             ContactPerson contactPerson = repository.findContactPersonByLastNameAndFirstName(lastname, firstname);
             System.out.println(contactPerson.getCompany().getCompanyName());
             return contactPerson;
         }
         catch(Exception e){
-            throw new IllegalArgumentException("nix");
+            throw new IllegalArgumentException("Es konnte kein Ansprechpartner gefunden werden.");
         }
     }
 }

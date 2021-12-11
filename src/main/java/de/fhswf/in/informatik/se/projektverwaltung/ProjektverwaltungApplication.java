@@ -3,7 +3,6 @@ package de.fhswf.in.informatik.se.projektverwaltung;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.*;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.ModuleEnum;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status;
-import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobjects.PresentationDates;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobjects.ProjectDescription;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.repositories.*;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
@@ -14,15 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
-/**
- * TODO:
- *          - ProjectfindbyStudent
- *          - setter sind anscheinend schlecht? sollen die Klassen selber machen also mit new Arbeiten?
- *          - Email angabe über Vaadin validieren?
- *          - Methoden schöner machen mehr mit den Service KLassen machen um es leichter zu machen in der Benutzung?
- *          - Validierung der Eingaben
- *          - Kommentare
- */
 @SpringBootApplication
 public class ProjektverwaltungApplication {
 
@@ -34,8 +24,10 @@ public class ProjektverwaltungApplication {
 
     @Autowired
     private ContactPersonRepository contactPersonRepository;
+
     @Autowired
     private ProjectRepository projectRepository;
+
     @Autowired
     private ModuleCoordinatorRepository moduleCoordinatorRepository;
 

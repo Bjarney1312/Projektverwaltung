@@ -1,8 +1,14 @@
 package de.fhswf.in.informatik.se.projektverwaltung.backend.entities;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 
+/**
+ * Die Klasse ContactPerson enthält alle Informationen zu einem Ansprechpartner
+ * zu dem Projekt eines Studenten. Es werden Name, Mail und das Unternehmen gespeichert,
+ * zu dem der ansprechpartner gehört.
+ *
+ * @author Ramon Günther & Ivonne Kneißig
+ */
 @Entity
 public class ContactPerson {
 

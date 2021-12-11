@@ -6,10 +6,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Die Klasse CompanyService implementiert primär die Methoden aus dem Interface @{@link CompanyRepository}
+ * um diese im Frontend dann verwenden zu können.
+ *
+ * @author  Ramon Günther & Ivonne Kneißig
+ */
 @Service
 public class CompanyService {
 
-    private CompanyRepository repository;
+    private final CompanyRepository repository;
 
     public CompanyService(CompanyRepository repository) {
         this.repository = repository;

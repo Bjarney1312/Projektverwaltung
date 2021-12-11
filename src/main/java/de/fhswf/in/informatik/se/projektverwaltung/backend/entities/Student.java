@@ -3,6 +3,12 @@ package de.fhswf.in.informatik.se.projektverwaltung.backend.entities;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Die Klasse Student enthält alle notwendigen Informationen zu einem Studenten.
+ * Sie speichert den Benutzernamen, die FH-Mail und den Vor- und Nachnamen Namen des Studenten.
+ *
+ * @author Ramon Günther & Ivonne Kneißig
+ */
 @Entity
 public class Student {
 	@Id

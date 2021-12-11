@@ -37,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
                 .antMatchers("/").hasAnyAuthority("STUDENT", "DOZENT")
                 .antMatchers("/projektuebersicht_student").hasAuthority("STUDENT")
-                .antMatchers("/projektantrag_student/:module").hasAuthority("STUDENT")
+                .antMatchers("/projektantrag_student/:projectid").hasAuthority("STUDENT")
                 .antMatchers("/projektuebersicht_dozent").hasAuthority("DOZENT")
                 .anyRequest().authenticated()
                 .and()

@@ -1,9 +1,11 @@
 package de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Die Enumeration ModuleEnum enthält alle Module, zu denen Projekte angeboten
+ * bzw. bearbeitet werden können.
+ *
+ * @author Ramon Günther & Ivonne Kneißig
+ */
 public enum ModuleEnum {
 
 	SOFTWARE_ENGINEERING ("Software Engineering"),

@@ -1,4 +1,5 @@
 package de.fhswf.in.informatik.se.projektverwaltung.backend.entities;
+
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.ModuleEnum;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobjects.PresentationDates;
@@ -7,6 +8,17 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobjects
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Die Klasse Project enthält alle Informationen zu einem Projekt, das
+ * ein Student zu einem Modul an der FH-Südwestfalen bearbeiten kann.
+ * Dazu gehören die Projektbeschreibung, ein Ansprechpartner mit dem
+ * Unternehmen zu dem er gehört, dem Modulverantwortlichen und das Modul,
+ * dem das Projekt zugeordnet ist, sowie einer Gruppe von Studenten,
+ * die das Projekt bearbeitet. Außerdem wird der aktuelle Status des
+ * Projekts gespeichert.
+ *
+ * @author Ramon Günther & Ivonne Kneißig
+ */
 @Entity
 public class Project {
 
@@ -17,7 +29,6 @@ public class Project {
 	@ManyToOne
 	private ContactPerson contactPerson;
 
-	//TODO: Absicherung über size wegen 1-3??
 	@ManyToMany
 	private Set<Student> students;
 

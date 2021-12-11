@@ -1,12 +1,16 @@
 package de.fhswf.in.informatik.se.projektverwaltung.backend.entities;
 
-//TODO: ManyToMany Enum?
-
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.ModuleEnum;
 
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Die Klasse ModuleCoordinator enthält alle Informationen zu einem Dozenten bzw. Modulbeauftragen,
+ * der Projekte für Studenten zu einem oder mehreren Modulen anbietet.
+ *
+ * @author Ramon Günther & Ivonne Kneißig
+ */
 @Entity
 public class ModuleCoordinator {
 

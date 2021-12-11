@@ -6,6 +6,11 @@ import org.hibernate.annotations.Formula;
 import javax.persistence.Embeddable;
 import java.time.LocalDateTime;
 
+/**
+ * Die Klasse PresentationDates speichert die Präsentationstermine zu einem Projekt.
+ *
+ * @author Ramon Günther & Ivonne Kneißig
+ */
 @Embeddable
 public class PresentationDates {
 
@@ -13,11 +18,10 @@ public class PresentationDates {
 
     private LocalDateTime termin2;
 
-	//damit die Embeddable Klasse kein NULL zurück wirft wenn man was eintragen möchte
+	//Damit die Embeddable Klasse kein NULL zurückwirft, wenn man was eintragen möchte
 	@Formula("0")
 	private int dummy;
 
-	//Entweder über den Konstruktor oder über die Methoden einzeln
     public PresentationDates(LocalDateTime termin1, LocalDateTime termin2) {
         this.termin1 = termin1;
         this.termin2 = termin2;

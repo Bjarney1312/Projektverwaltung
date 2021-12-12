@@ -1,0 +1,43 @@
+.student-project-details-title{
+
+}
+
+.student-project-details{
+    width: 1000px;
+    margin: auto;
+}
+
+.student-project-details-labelt{
+
+}
+
+.student-project-details-upperformlayout{
+    border: 1px solid lightskyblue;
+
+    padding-left: 50px;
+    padding-bottom: 40px;
+}
+
+.student-project-details-lowerformlayout{
+    border: 1px solid lightskyblue;
+    padding-left: 50px;
+    padding-bottom: 40px;
+    margin-top: 30px;
+}
+
+.student-project-details-h2{
+
+}
+
+.student-project-details-buttonbox{
+    margin-left: 180px;
+
+}
+
+.student-project-details-buttons{
+    width: 200px;
+    margin-top: 50px;
+    margin-left: 70px;
+    margin-right: 70px;
+}
+

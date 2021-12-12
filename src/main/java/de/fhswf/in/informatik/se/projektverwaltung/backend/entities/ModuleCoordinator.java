@@ -55,4 +55,14 @@ public class ModuleCoordinator {
 	public List<ModuleEnum> getModul() {
 		return moduleEnum;
 	}
+
+	public ModuleEnum getModulByModulName(String modulName){
+		ModuleEnum result = null;
+		for(ModuleEnum module : moduleEnum){
+			if(module.label.equals(modulName)){
+				result = module;
+			}
+		}
+		return result;
+	}
 }

@@ -13,6 +13,11 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ModuleCoordinatorService;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent.AddAppointments;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent.AddFreeProjects;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.NewProjectRequestDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 
 /**
@@ -28,7 +33,13 @@ import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 @CssImport("/themes/projektverwaltung/views/dozent/dozent-project-overview.css")
 public class DozentProjectOverview extends VerticalLayout {
 
-    public DozentProjectOverview(){
+    private final ModuleCoordinatorService moduleCoordinatorService;
+    private final ProjectService projectService;
+
+    public DozentProjectOverview(ModuleCoordinatorService moduleCoordinatorService, ProjectService projectService){
+
+        this.moduleCoordinatorService = moduleCoordinatorService;
+        this.projectService = projectService;
 
         H1 title = new H1("Projektverwaltung");
         title.setId("title-projektverwaltung-dozent");
@@ -51,14 +62,22 @@ public class DozentProjectOverview extends VerticalLayout {
         Button buttonNewAppointment = new Button("Termin vergeben");
         buttonNewAppointment.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonNewAppointment.setClassName("dozent-projekt-overview-button");
+        buttonNewAppointment.addClickListener(newAppointmentEvent -> {
+            AddAppointments dialog = new AddAppointments(this.projectService);
+            dialog.open();
+        });
 
         Button buttonUpdateProjectRequest = new Button("Projekt bearbeiten");
         buttonUpdateProjectRequest.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonUpdateProjectRequest.setClassName("dozent-projekt-overview-button");
 
-        Button buttonNewProjects = new Button("Projekte vergeben    ");
+        Button buttonNewProjects = new Button("Projekte vergeben");
         buttonNewProjects.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonNewProjects.setClassName("dozent-projekt-overview-button");
+        buttonNewProjects.addClickListener(newProjectEvent -> {
+            AddFreeProjects dialog = new AddFreeProjects(this.moduleCoordinatorService, this.projectService);
+            dialog.open();
+        });
 
         HorizontalLayout buttonBox = new HorizontalLayout();
         buttonBox.setClassName("dozent-projekt-overview-buttonbox");

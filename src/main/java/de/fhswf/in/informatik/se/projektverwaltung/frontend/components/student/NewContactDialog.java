@@ -20,7 +20,7 @@ import com.vaadin.flow.component.textfield.TextField;
  *
  * @author Ivonne Kneißig & Ramon Günther
  */
-@CssImport("/themes/projektverwaltung/components/new-contact-dialog.css")
+@CssImport("/themes/projektverwaltung/components/student/new-contact-dialog.css")
 public class NewContactDialog extends Dialog {
 
     public NewContactDialog (){

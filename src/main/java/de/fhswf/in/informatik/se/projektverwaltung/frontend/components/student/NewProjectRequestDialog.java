@@ -28,7 +28,7 @@ import java.util.List;
  *
  * @author Ivonne Kneißig & Ramon Günther
  */
-@CssImport("/themes/projektverwaltung/components/new-project-dialog.css")
+@CssImport("/themes/projektverwaltung/components/student/new-project-dialog.css")
 public class NewProjectRequestDialog extends Dialog {
 
     private Label moduleProjectInformation;

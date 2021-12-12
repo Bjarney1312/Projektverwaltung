@@ -21,8 +21,9 @@
 .dozent-project-overview-select{
     width: 400px;
     margin-bottom: 20px;
+    margin-left: 5px;
 }
 
 .dozent-project-overview-radio{
-    margin-left: 150px;
+    margin-left: 145px;
 }

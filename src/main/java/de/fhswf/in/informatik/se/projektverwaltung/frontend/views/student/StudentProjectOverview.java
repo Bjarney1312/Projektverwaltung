@@ -1,5 +1,6 @@
 package de.fhswf.in.informatik.se.projektverwaltung.frontend.views.student;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteParameters;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Student;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
@@ -35,6 +37,8 @@ public class StudentProjectOverview extends VerticalLayout {
     private final ProjectService projectService;
 
     private final StudentService studentService;
+
+    private Long projectId;
 
     public StudentProjectOverview(ProjectService projectService, StudentService studentService){
 
@@ -75,6 +79,9 @@ public class StudentProjectOverview extends VerticalLayout {
         Button buttonProjectDetails = new Button("Projekt ansehen");
         buttonProjectDetails.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonProjectDetails.setClassName("student-projekt-overview-button");
+        buttonProjectDetails.addClickListener(projectDetailsEvent -> {
+            UI.getCurrent().navigate(StudentProjectDetails.class, new RouteParameters("projectid", "1"));
+        });
 
         HorizontalLayout buttonBox = new HorizontalLayout();
         buttonBox.setClassName("student-projekt-overview-buttonbox");

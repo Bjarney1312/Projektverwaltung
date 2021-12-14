@@ -6,17 +6,19 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.StreamResource;
-import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.ContactPerson;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Student;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ContactPersonService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.StudentService;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.EditContactDialog;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.EditProjectDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 
 import java.io.ByteArrayInputStream;
@@ -55,7 +57,18 @@ public class StudentProjectDetails extends VerticalLayout implements BeforeEnter
 //        contactName.setLabel("Ansprechpartner");
 //        contactName.setEnabled(false);
 //        contactName.setValue(project.getContactPerson().getLastName() + ", " + project.getContactPerson().getFirstName());
-        H2 contact = new H2("Ansprechpartner");
+        H2 contact = new H2("Ansprechpartner" );
+        Button buttonEditContact = new Button();
+        buttonEditContact.setIcon(new Icon(VaadinIcon.PENCIL));
+        buttonEditContact.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        buttonEditContact.setClassName("student-project-details-contacteditbutton");
+        buttonEditContact.addClickListener(editContactEvent -> {
+            EditContactDialog editContact = new EditContactDialog();
+            editContact.open();
+        });
+        HorizontalLayout layoutConctactTitleWithButton = new HorizontalLayout(contact, buttonEditContact);
+        layoutConctactTitleWithButton.setClassName("student-project-details-contacteditlayout");
+
         contact.setClassName("student-project-details-h2");
         Label contactName = new Label(project.getContactPerson().getLastName()
                 + ", " + project.getContactPerson().getFirstName());
@@ -106,13 +119,19 @@ public class StudentProjectDetails extends VerticalLayout implements BeforeEnter
         projectDescription.setText("Download");
         projectDescription.setTarget(AnchorTarget.BLANK);
 
+        H3 commentTitle = new H3("Kommentar");
+        Label comment = new Label(project.getComment());
+
         HorizontalLayout buttonBox = new HorizontalLayout();
 
         Button buttonEdit = new Button("Projekt bearbeiten");
         buttonEdit.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonEdit.setClassName("student-project-details-buttons");
-        buttonEdit.setEnabled(false);
-//        buttonEdit.addClickListener(newProjectEvent -> {});
+//        buttonEdit.setEnabled(false);
+        buttonEdit.addClickListener(editProjectEvent -> {
+            EditProjectDialog editProject = new EditProjectDialog(projectService, project);
+            editProject.open();
+        });
 
         Button buttonCancel = new Button("Schließen");
         buttonCancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -123,7 +142,7 @@ public class StudentProjectDetails extends VerticalLayout implements BeforeEnter
         buttonBox.addClassName("student-project-details-buttonbox");
 
         FormLayout projectDetailsTop = new FormLayout(
-                module, contact,
+                module, layoutConctactTitleWithButton,
                 moduleName, contactName,
                 new Label(), contactMail,
                 group, company,
@@ -145,7 +164,9 @@ public class StudentProjectDetails extends VerticalLayout implements BeforeEnter
                 backgroundTitle,
                 projectBackground,
                 descriptopnTitle,
-                projectDescription
+                projectDescription,
+                commentTitle,
+                comment
         );
         projectDetailsBottom.setResponsiveSteps(new FormLayout.ResponsiveStep("0", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP),
                 new FormLayout.ResponsiveStep("500px", 1, FormLayout.ResponsiveStep.LabelsPosition.TOP));

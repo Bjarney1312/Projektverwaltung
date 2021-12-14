@@ -31,12 +31,12 @@ import java.util.List;
 @CssImport("/themes/projektverwaltung/components/student/new-project-dialog.css")
 public class NewProjectRequestDialog extends Dialog {
 
-    private Label moduleProjectInformation;
+    private final Label moduleProjectInformation;
     private final ProjectService projectService;
     private Long projectId;
     private Button buttonChoose;
 
-    public NewProjectRequestDialog(ProjectService projectService){
+    public NewProjectRequestDialog(ProjectService projectService, List<String> studentModules){
 
         this.projectService = projectService;
 
@@ -61,15 +61,22 @@ public class NewProjectRequestDialog extends Dialog {
         moduleProjectInformation.setClassName("new-project-dialog-label");
 
         selectModule.addValueChangeListener(event -> {
-            try{
-                projectId = this.projectService.getProjectByStatusAndModuleEnum(Status.FREI, event.getValue()).getId();
-                moduleProjectInformation.setText("Es ist ein freier Projektplatz verfügbar");
-                moduleProjectInformation.getStyle().set("color", "darkgreen");
-                buttonChoose.setEnabled(true);
-            } catch(Exception e){
-                moduleProjectInformation.setText(e.getMessage());
+            if(studentModules.contains(selectModule.getValue())){
+                moduleProjectInformation.setText("Projekt für " + selectModule.getValue() + " bereits vorhanden.");
                 moduleProjectInformation.getStyle().set("color", "red");
                 buttonChoose.setEnabled(false);
+            }
+            else {
+                try {
+                    projectId = this.projectService.getProjectByStatusAndModuleEnum(Status.FREI, event.getValue()).getId();
+                    moduleProjectInformation.setText("Es ist ein freier Projektplatz verfügbar");
+                    moduleProjectInformation.getStyle().set("color", "darkgreen");
+                    buttonChoose.setEnabled(true);
+                } catch (Exception e) {
+                    moduleProjectInformation.setText(e.getMessage());
+                    moduleProjectInformation.getStyle().set("color", "red");
+                    buttonChoose.setEnabled(false);
+                }
             }
         });
 

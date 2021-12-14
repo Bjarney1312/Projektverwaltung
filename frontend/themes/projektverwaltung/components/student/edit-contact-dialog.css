@@ -1,0 +1,23 @@
+.edit-contact-dialog-selectcontact{
+    width: 450px;
+}
+
+.edit-contact-dialog-addnewbutton{
+    width: 450px;
+    margin-top: 30px;
+}
+.edit-contact-dialog-button{
+    width: 200px;
+    margin-top: 20px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.edit-contact-dialog-titlecontact{
+    margin-top: -5px;
+    font-size: 15pt;
+}
+
+.edit-contact-dialog-titlecompany{
+    font-size: 15pt;
+}

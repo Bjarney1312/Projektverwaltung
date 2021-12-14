@@ -21,6 +21,9 @@ import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.N
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Die Klasse StudentProjectOverview ist die Startseite für Studenten
  * und zeigt eine Übersicht seiner aktiven Projekte. Außerdem kann er
@@ -72,7 +75,11 @@ public class StudentProjectOverview extends VerticalLayout {
         buttonNewProject.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonNewProject.setClassName("student-projekt-overview-button");
         buttonNewProject.addClickListener(newProjectEvent -> {
-            NewProjectRequestDialog dialog = new NewProjectRequestDialog(projectService);
+            List<String> studentModules = new ArrayList<>();
+            for(Project projects : this.projectService.getAllProjectsByStudents(student)){
+                studentModules.add(projects.getModuleEnum());
+            }
+            NewProjectRequestDialog dialog = new NewProjectRequestDialog(projectService, studentModules);
             dialog.open();
         });
 

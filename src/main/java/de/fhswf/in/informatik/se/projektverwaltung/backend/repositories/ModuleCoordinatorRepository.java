@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ModuleCoordinatorRepository extends JpaRepository<ModuleCoordinator, Long> {
-    ModuleCoordinator findModuleCoordinatorByModuleEnum(ModuleEnum modulname);
+    ModuleCoordinator findModuleCoordinatorByModuleList(ModuleEnum modulname);
     ModuleCoordinator findByUsername(String username);
 
 }

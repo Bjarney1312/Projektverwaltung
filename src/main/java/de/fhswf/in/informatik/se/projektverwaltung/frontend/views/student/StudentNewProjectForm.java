@@ -343,6 +343,6 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
         Optional<Project> projectOptional = projectService.findProjectById(projectId);
         projectOptional.ifPresent(value -> project = value);
-        moduleText.setText("Modul: " + project.getModuleEnum());
+        moduleText.setText("Modul: " + project.getModule());
     }
 }

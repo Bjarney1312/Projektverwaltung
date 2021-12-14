@@ -43,9 +43,9 @@ public class Project {
 
 	private Status status;
 	private String comment;
-	private String moduleEnum;
+	private String module;
 
-	public Project(ContactPerson contactPerson, Set<Student> students, ModuleCoordinator moduleCoordinator, ProjectDescription projectDescription, Status status, String comment, ModuleEnum moduleEnum) {
+	public Project(ContactPerson contactPerson, Set<Student> students, ModuleCoordinator moduleCoordinator, ProjectDescription projectDescription, Status status, String comment, ModuleEnum module) {
 		if(students.size() <= 1 || students.size() > 3 ) {
 			throw new IllegalArgumentException("Fehler: Die Gruppengröße muss im Bereich 2-3 liegen");
 		}
@@ -56,11 +56,11 @@ public class Project {
 		this.presentationDates = new PresentationDates(null,null);
 		this.status = status;
 		this.comment = comment;
-		this.moduleEnum = moduleEnum.label;
+		this.module = module.label;
 	}
 
-	public Project(ModuleEnum moduleEnum, ModuleCoordinator moduleCoordinator) {
-		this.moduleEnum = moduleEnum.label;
+	public Project(ModuleEnum module, ModuleCoordinator moduleCoordinator) {
+		this.module = module.label;
 		this.presentationDates = new PresentationDates(null,null);
 		this.projectDescription = new ProjectDescription();
 		this.status = Status.FREI;
@@ -102,8 +102,8 @@ public class Project {
 		return comment;
 	}
 
-	public String getModuleEnum() {
-		return moduleEnum;
+	public String getModule() {
+		return module;
 	}
 
 	public void setStatus(Status status) {
@@ -134,7 +134,7 @@ public class Project {
 		this.comment = comment;
 	}
 
-	public void setModuleEnum(ModuleEnum moduleEnum) {
-		this.moduleEnum = moduleEnum.label;
+	public void setModule(ModuleEnum moduleEnum) {
+		this.module = moduleEnum.label;
 	}
 }

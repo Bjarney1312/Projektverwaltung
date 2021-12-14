@@ -36,7 +36,7 @@ public class ModuleCoordinatorService {
     }
 
     public ModuleCoordinator getModuleCoordinatorByModule(ModuleEnum moduleEnum){
-        return repository.findModuleCoordinatorByModuleEnum(moduleEnum);
+        return repository.findModuleCoordinatorByModuleList(moduleEnum);
     }
 
    public ModuleCoordinator findByUsername(){

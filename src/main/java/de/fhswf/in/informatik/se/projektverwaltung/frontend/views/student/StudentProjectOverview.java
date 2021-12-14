@@ -8,6 +8,8 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -23,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Die Klasse StudentProjectOverview ist die Startseite für Studenten
@@ -52,7 +55,7 @@ public class StudentProjectOverview extends VerticalLayout {
         title.setId("title-projektverwaltung-student");
 
         Grid<Project> grid = new Grid<>();
-        grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
         grid.setClassName("student-project-overview-grid");
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -62,7 +65,7 @@ public class StudentProjectOverview extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.addColumn(projectTitle -> projectTitle.getProjectDescription().getTitle()).setHeader("Projekttitel");
 
-        grid.addColumn(Project::getModuleEnum).setHeader("Modul");
+        grid.addColumn(Project::getModule).setHeader("Modul");
         grid.addColumn(Project::getStatus).setHeader("Projektstatus");
         grid.addColumn(moduleCoordinator ->
                 moduleCoordinator.getModuleCoordinator().getLastName()
@@ -71,23 +74,51 @@ public class StudentProjectOverview extends VerticalLayout {
                 contactPerson.getContactPerson().getLastName()
                         + ", " + contactPerson.getContactPerson().getFirstName()).setHeader("Ansprechpartner");
 
+
+        grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+
+
         Button buttonNewProject = new Button("Projektvorschlag");
         buttonNewProject.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonNewProject.setClassName("student-projekt-overview-button");
         buttonNewProject.addClickListener(newProjectEvent -> {
             List<String> studentModules = new ArrayList<>();
             for(Project projects : this.projectService.getAllProjectsByStudents(student)){
-                studentModules.add(projects.getModuleEnum());
+                studentModules.add(projects.getModule());
             }
             NewProjectRequestDialog dialog = new NewProjectRequestDialog(projectService, studentModules);
             dialog.open();
         });
 
         Button buttonProjectDetails = new Button("Projekt ansehen");
+        buttonProjectDetails.setEnabled(false);
         buttonProjectDetails.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonProjectDetails.setClassName("student-projekt-overview-button");
         buttonProjectDetails.addClickListener(projectDetailsEvent -> {
-            UI.getCurrent().navigate(StudentProjectDetails.class, new RouteParameters("projectid", "1"));
+
+            //TODO: Variante 2
+//            if(grid.getSelectedItems().isEmpty()){
+//                Notification notification = Notification.show(
+//                        "Es wurde keine Zeile ausgewählt!",
+//                        5000,
+//                        Notification.Position.BOTTOM_START
+//                );
+//                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+//                return;
+//            }
+            List<Project> projectList= new ArrayList<>(grid.getSelectedItems());
+            System.out.println(projectList.get(0).getId());
+            UI.getCurrent().navigate(StudentProjectDetails.class, new RouteParameters("projectid", String.valueOf(projectList.get(0).getId())));
+        });
+
+        //TODO: Variante 1
+        grid.addSelectionListener(event -> {
+            if(event.getAllSelectedItems().isEmpty()){
+                buttonProjectDetails.setEnabled(false);
+            }
+            else{
+                buttonProjectDetails.setEnabled(true);
+            }
         });
 
         HorizontalLayout buttonBox = new HorizontalLayout();

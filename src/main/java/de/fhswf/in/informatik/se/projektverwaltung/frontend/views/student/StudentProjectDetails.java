@@ -48,7 +48,7 @@ public class StudentProjectDetails extends VerticalLayout implements BeforeEnter
 
         //Modul
         H2 module = new H2("Modul");
-        Label moduleName = new Label("Modul: " + project.getModuleEnum());
+        Label moduleName = new Label("Modul: " + project.getModule());
         moduleName.setClassName("student-project-details-h2");
 
         //Ansprechpartner

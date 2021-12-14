@@ -23,13 +23,13 @@ public class ModuleCoordinator {
 	private String lastName;
 
 	@ElementCollection
-	private List<ModuleEnum> moduleEnum;
+	private List<ModuleEnum> moduleList;
 
-	public ModuleCoordinator(String username, String firstName, String lastName, List<ModuleEnum> moduleEnum) {
+	public ModuleCoordinator(String username, String firstName, String lastName, List<ModuleEnum> moduleList) {
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.moduleEnum = moduleEnum;
+		this.moduleList = moduleList;
 	}
 
 	public ModuleCoordinator() {
@@ -53,12 +53,12 @@ public class ModuleCoordinator {
 	}
 
 	public List<ModuleEnum> getModul() {
-		return moduleEnum;
+		return moduleList;
 	}
 
 	public ModuleEnum getModulByModulName(String modulName){
 		ModuleEnum result = null;
-		for(ModuleEnum module : moduleEnum){
+		for(ModuleEnum module : moduleList){
 			if(module.label.equals(modulName)){
 				result = module;
 			}

@@ -68,7 +68,7 @@ public class NewProjectRequestDialog extends Dialog {
             }
             else {
                 try {
-                    projectId = this.projectService.getProjectByStatusAndModuleEnum(Status.FREI, event.getValue()).getId();
+                    projectId = this.projectService.getEmptyProject(event.getValue()).getId();
                     moduleProjectInformation.setText("Es ist ein freier Projektplatz verfügbar");
                     moduleProjectInformation.getStyle().set("color", "darkgreen");
                     buttonChoose.setEnabled(true);

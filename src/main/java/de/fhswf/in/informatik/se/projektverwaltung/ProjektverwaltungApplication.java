@@ -52,12 +52,20 @@ public class ProjektverwaltungApplication {
 
         List<ModuleEnum> moduleEnums = new ArrayList<>();
         moduleEnums.add(ModuleEnum.SOFTWARE_ENGINEERING);
+        moduleEnums.add(ModuleEnum.MOBILE_APPLIKATIONEN);
 
         moduleCoordinatorRepository.save(new ModuleCoordinator("alnie001", "Alina","Nieswand", moduleEnums));
+
+        moduleEnums.clear();
+        moduleEnums.add(ModuleEnum.FORTGESCHRITTENE_INTERNETTECHNOLOGIEN);
+        moduleCoordinatorRepository.save(new ModuleCoordinator("chgaw001", "Christian","Gawron", moduleEnums));
+
 
         //Projektplätzevergeben
         ProjectService projectService = new ProjectService(projectRepository,moduleCoordinatorRepository);
         projectService.initializeProjects(ModuleEnum.SOFTWARE_ENGINEERING, 10);
+        projectService.initializeProjects(ModuleEnum.MOBILE_APPLIKATIONEN, 5);
+
 
         Project project = projectRepository.getById(1L); //TODO besser findbyid nutzen wegen optional und dem Fehler
 
@@ -95,5 +103,38 @@ public class ProjektverwaltungApplication {
         //Projektdaten einzeln eintragen ! alle setter fertig machen wegen neue System
 
         projectRepository.save(project);
+
+
+        Project project1 = projectService.getEmptyProject(ModuleEnum.MOBILE_APPLIKATIONEN.label);
+
+        project1.setStudents(studentSet);
+
+
+        project1.setModuleCoordinator(moduleCoordinator);
+
+        ContactPerson contactPerson1 = contactPersonRepository.getById(2L);
+        project1.setContactPerson(contactPerson1);
+
+        project1.setProjectDescription(projectDescription);
+        project1.setStatus(Status.ERGAENZUNG);
+
+        projectRepository.save(project1);
+
+
+
+        Project project2 = projectService.getEmptyProject(ModuleEnum.MOBILE_APPLIKATIONEN.label);
+
+        project2.setStudents(studentSet);
+
+        project2.setModuleCoordinator(moduleCoordinator);
+
+        ContactPerson contactPerson2 = contactPersonRepository.getById(3L);
+        project2.setContactPerson(contactPerson2);
+
+        project2.setProjectDescription(projectDescription);
+        project2.setStatus(Status.ZUGELASSEN);
+
+        projectRepository.save(project2);
+
     }
 }

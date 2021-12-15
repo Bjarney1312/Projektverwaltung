@@ -20,14 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @CssImport("/themes/projektverwaltung/components/dozent/add-free-projects.css")
-public class AddFreeProjects extends Dialog {
+public class AddFreeProjectsDialog extends Dialog {
 
     private final ModuleCoordinatorService moduleCoordinatorService;
     private final ProjectService projectService;
 
     private Button buttonAddProjects;
 
-    public AddFreeProjects(ModuleCoordinatorService moduleCoordinatorService, ProjectService projectService){
+    public AddFreeProjectsDialog(ModuleCoordinatorService moduleCoordinatorService, ProjectService projectService){
 
         this.moduleCoordinatorService = moduleCoordinatorService;
         this.projectService = projectService;

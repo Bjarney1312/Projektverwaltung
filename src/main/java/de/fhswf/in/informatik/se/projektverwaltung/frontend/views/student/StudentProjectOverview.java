@@ -8,8 +8,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -25,7 +23,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Die Klasse StudentProjectOverview ist die Startseite für Studenten
@@ -107,8 +104,7 @@ public class StudentProjectOverview extends VerticalLayout {
 //                return;
 //            }
             List<Project> projectList= new ArrayList<>(grid.getSelectedItems());
-            System.out.println(projectList.get(0).getId());
-            UI.getCurrent().navigate(StudentProjectDetails.class, new RouteParameters("projectid", String.valueOf(projectList.get(0).getId())));
+            UI.getCurrent().navigate(StudentProjectDetails.class, new RouteParameters("projectid", projectId.toString()));
         });
 
         //TODO: Variante 1
@@ -118,6 +114,7 @@ public class StudentProjectOverview extends VerticalLayout {
             }
             else{
                 buttonProjectDetails.setEnabled(true);
+                event.getFirstSelectedItem().ifPresent(project -> projectId = project.getId());
             }
         });
 

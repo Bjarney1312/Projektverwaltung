@@ -1,0 +1,21 @@
+.project-modification-title{
+    margin-top: -5px;
+    font-size: 15pt;
+}
+
+.project-modification-buttons{
+    width: 200px;
+    margin-top: 20px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.project-modification-buttonbox{
+    margin-top: 20px;
+    margin-left: 15px;
+}
+
+.project-modification-comment{
+    width: 450px;
+    height: 250px;
+}

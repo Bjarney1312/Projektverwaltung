@@ -23,6 +23,7 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.*;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobjects.ProjectDescription;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.*;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationError;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.NewContactDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -276,12 +277,7 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
                     || groupMemberTwo == null
                     || contactPerson == null
             ){
-                Notification notification = Notification.show(
-                        "Bitte alle Felder ausfüllen",
-                        5000,
-                        Notification.Position.BOTTOM_START
-                );
-                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+                NotificationError notification = NotificationError.show("Bitte alle Felder ausfüllen");
             }
             else{
                 this.projectDescription = new ProjectDescription(

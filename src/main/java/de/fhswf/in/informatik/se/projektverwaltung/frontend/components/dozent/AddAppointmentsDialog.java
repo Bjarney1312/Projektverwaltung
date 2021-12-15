@@ -8,21 +8,23 @@ import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
 
 import java.time.Duration;
 
 @CssImport("/themes/projektverwaltung/components/dozent/add-appointments.css")
-
-public class AddAppointments extends Dialog {
+public class AddAppointmentsDialog extends Dialog {
 
     private final ProjectService projectService;
+    private Project project;
 
     private Button buttonAddAppointments;
 
-    public AddAppointments(ProjectService projectService){
+    public AddAppointmentsDialog(ProjectService projectService, Long projectId){
 
         this.projectService = projectService;
+        projectService.findProjectById(projectId).ifPresent(project -> this.project = project);
 
         setWidth("510px");
         setCloseOnEsc(false);
@@ -35,11 +37,19 @@ public class AddAppointments extends Dialog {
         appointmentOne.setLabel("Termin 1");
         appointmentOne.setStep(Duration.ofMinutes(15));
         appointmentOne.setClassName("add-appointments-datetime");
+        appointmentOne.addValueChangeListener(appointmentOneEvent -> {
+            buttonAddAppointments.setEnabled(true);
+            project.getPresentationDates().setTermin1(appointmentOneEvent.getValue());
+        });
 
         DateTimePicker appointmentTwo = new DateTimePicker();
         appointmentTwo.setLabel("Termin 2");
         appointmentTwo.setStep(Duration.ofMinutes(15));
         appointmentTwo.setClassName("add-appointments-datetime");
+        appointmentTwo.addValueChangeListener(appointmentTwoEvent -> {
+            buttonAddAppointments.setEnabled(true);
+            project.getPresentationDates().setTermin2(appointmentTwoEvent.getValue());
+        });
 
         HorizontalLayout buttonBox = new HorizontalLayout();
 
@@ -48,6 +58,7 @@ public class AddAppointments extends Dialog {
         buttonAddAppointments.setClassName("add-appointments-buttons");
         buttonAddAppointments.setEnabled(false);
         buttonAddAppointments.addClickListener(newProjectEvent -> {
+            projectService.saveProject(project);
             this.close();
         });
 
@@ -56,8 +67,16 @@ public class AddAppointments extends Dialog {
         buttonCancel.setClassName("add-appointments-buttons");
         buttonCancel.addClickListener(dialogCloseEvent -> this.close());
 
+        if(project.getPresentationDates().getTermin1() != null){
+            appointmentOne.setValue(project.getPresentationDates().getTermin1());
+            appointmentOne.setEnabled(false);
+            buttonAddAppointments.setEnabled(false);
+        }
+
         buttonBox.add(buttonAddAppointments, buttonCancel);
         buttonBox.addClassName("add-appointments-buttonbox");
+
+
 
         Div div = new Div(title, appointmentOne, appointmentTwo, buttonBox);
         div.addClassName("add-appointments-dialog");

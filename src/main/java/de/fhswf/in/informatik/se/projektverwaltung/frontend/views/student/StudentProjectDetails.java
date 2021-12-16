@@ -10,12 +10,16 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.services.CompanyService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ContactPersonService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.StudentService;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.ProjectDetails;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.EditProjectDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.dozent.DozentProjectOverview;
+import net.bytebuddy.implementation.bytecode.Throw;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
@@ -27,26 +31,21 @@ public class StudentProjectDetails extends VerticalLayout implements BeforeEnter
     private final ProjectService projectService;
     private final StudentService studentService;
     private final ContactPersonService contactPersonService;
+    private final CompanyService companyService;
+
     private Project project;
     private Long projectId;
 
-    public StudentProjectDetails(ProjectService projectService, StudentService studentService, ContactPersonService contactPersonService){
-
+    public StudentProjectDetails(ProjectService projectService, StudentService studentService, ContactPersonService contactPersonService, CompanyService companyService){
         this.projectService = projectService;
         this.studentService = studentService;
         this.contactPersonService = contactPersonService;
+        this.companyService = companyService;
     }
 
     private void createStudentProjectDetails(){
 
-
-        //Ansprechpartner
-//        Select<String> contactName = new Select<>();
-//        contactName.setItems(contactPersonService.getAllContactPersonNames());
-//        contactName.setLabel("Ansprechpartner");
-//        contactName.setEnabled(false);
-//        contactName.setValue(project.getContactPerson().getLastName() + ", " + project.getContactPerson().getFirstName());
-        ProjectDetails projectDetails = new ProjectDetails(project);
+        ProjectDetails projectDetails = new ProjectDetails(project, projectService, contactPersonService, companyService);
 
         HorizontalLayout buttonBox = new HorizontalLayout();
 
@@ -84,8 +83,13 @@ public class StudentProjectDetails extends VerticalLayout implements BeforeEnter
 
     @Override
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
+        //TODO: Man kann über die Url sich einfach jedes Projekt ansehen unabhängig vom Login und ich kann auch 500 suchen z.b.
+        //TODO: Ich kann genauso gut auf die DozentenUrl zugreifen und wenn man dann schließt fliegt eine Exception
+
         Optional<Project> projectOptional = projectService.findProjectById(projectId);
+
         projectOptional.ifPresent(value -> project = value);
+
         createStudentProjectDetails();
     }
 

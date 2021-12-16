@@ -16,10 +16,21 @@ import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.server.StreamResource;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Student;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobjects.ProjectDescription;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationError;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationPrimary;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationSuccess;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.student.StudentProjectOverview;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @CssImport("/themes/projektverwaltung/components/student/edit-project-form.css")
 public class EditProjectDialog extends Dialog {
@@ -45,14 +56,17 @@ public class EditProjectDialog extends Dialog {
         projectTitle = new TextField();
         projectTitle.setLabel("Projekttitel");
         projectTitle.addClassName("edit-project-form-input");
+        projectTitle.setValue(project.getProjectDescription().getTitle());
 
         projectSketch = new TextArea();
         projectSketch.setLabel("Kurze Skizze");
         projectSketch.addClassName("edit-project-form-input");
+        projectSketch.setValue(project.getProjectDescription().getSketch());
 
         projectBackground = new TextArea();
         projectBackground.setLabel("Beschreibung des Projekthintergrundes");
         projectBackground.addClassName("edit-project-form-input");
+        projectBackground.setValue(project.getProjectDescription().getDescriptionBackground());
 
         Label projectDescription = new Label("Beschreibung der wesentlichen Projektinhalte");
         projectDescription.setClassName("edit-project-form-upload-label");
@@ -108,8 +122,30 @@ public class EditProjectDialog extends Dialog {
         Button buttonSave = new Button("Speichern");
         buttonSave.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonSave.setClassName("student-new-project-form-button");
-        buttonSave.addClickListener(saveContactEvent -> {
+        buttonSave.addClickListener(e -> {
 
+            if(projectTitle.getValue() == null
+                    || projectSketch.getValue() == null
+                    || projectBackground.getValue() == null
+            ){
+                NotificationError notification = NotificationError.show("Bitte alle Felder ausfüllen");
+            }
+            else{
+
+                project.setProjectDescription(new ProjectDescription(
+                        projectTitle.getValue(),
+                        projectSketch.getValue(),
+                        projectBackground.getValue(),
+                        pdfByte));
+
+                project.setStatus(Status.ANFRAGE);
+
+                projectService.saveProject(project);
+
+                NotificationSuccess notification = NotificationSuccess.show("Der Projektantrag wurde erfolgreich überarbeitet");
+                close();
+                UI.getCurrent().getPage().reload();
+            }
         });
 
         Button buttonCancel = new Button("Abbrechen");

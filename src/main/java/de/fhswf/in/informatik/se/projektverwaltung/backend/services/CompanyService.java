@@ -4,6 +4,7 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Company;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.repositories.CompanyRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,5 +32,17 @@ public class CompanyService {
 
     public Company getCompanyById(Long id){
         return repository.getById(id);
+    }
+
+    public List<String> getAllCompanyNames(){
+        List<String> companyNames = new ArrayList<>();
+        for(Company company : repository.findAll()){
+            companyNames.add(company.getCompanyName());
+        }
+        return companyNames;
+    }
+
+    public Company getCompanyByCompanyName(String companyName){
+        return repository.getCompanyByCompanyName(companyName);
     }
 }

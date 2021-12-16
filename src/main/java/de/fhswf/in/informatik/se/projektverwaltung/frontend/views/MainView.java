@@ -8,6 +8,8 @@ import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.server.PWA;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.ButtonSwitchTheme;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 @PWA(name = "Projektverwaltung", shortName = "PV", enableInstallPrompt = false)
 public class MainView extends AppLayout {
@@ -35,9 +37,13 @@ public class MainView extends AppLayout {
 
         Anchor logout = new Anchor("logout", "Logout");
 
+        Label label = new Label(SecurityContextHolder.getContext().getAuthentication().getName());
+
+
+
         Tabs tabs = new Tabs (new Tab(logout));
 
-        HorizontalLayout header = new HorizontalLayout(title, tabs, switchTheme);
+        HorizontalLayout header = new HorizontalLayout(title, label, tabs, switchTheme);
         header.addClassName("header");
         header.setWidth("100%");
 

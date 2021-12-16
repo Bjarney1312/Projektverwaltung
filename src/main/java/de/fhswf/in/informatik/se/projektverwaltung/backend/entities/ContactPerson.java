@@ -20,16 +20,19 @@ public class ContactPerson {
 
 	private String lastName;
 
+	private String phoneNumber;
+
 	@ManyToOne
 	private Company company;
 
 	private String email;
 
-	public ContactPerson(String FirstName, String LastName, Company company, String email) {
+	public ContactPerson(String FirstName, String LastName, Company company, String email, String phoneNumber) {
 		this.firstName = FirstName;
 		this.lastName = LastName;
 		this.company = company;
 		this.email = email;
+		this.phoneNumber = phoneNumber;
 	}
 
 	public ContactPerson() {
@@ -54,5 +57,9 @@ public class ContactPerson {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 }

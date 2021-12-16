@@ -68,6 +68,8 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
     private Student groupMemberTwo;
     private Student groupMemberThree;
 
+    private Select<String> selectContact;
+
     public StudentNewProjectForm(ProjectService projectService,
                                  CompanyService companyService,
                                  ContactPersonService contactPersonService,
@@ -218,18 +220,20 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
             }
         });
 
-        TextField moduleCoordinatorCompany = new TextField();
-        moduleCoordinatorCompany.setLabel("Unternehmen");
-        moduleCoordinatorCompany.setPlaceholder("Unternehmen des Ansprechparnters");
-        moduleCoordinatorCompany.setReadOnly(true);
+        TextField contactPersonCompany = new TextField();
+        contactPersonCompany.setLabel("Unternehmen");
+        contactPersonCompany.setPlaceholder("Unternehmen des Ansprechparnters");
+        contactPersonCompany.setReadOnly(true);
 
-        Select<String> selectContact = new Select<>();
+        selectContact = new Select<>();
         selectContact.setLabel("Ansprechpartner");
         selectContact.setPlaceholder("Ansprechpartner auswählen");
         selectContact.setItems(contactPersonService.getAllContactPersonNames());
         selectContact.addValueChangeListener(event -> {
-            contactPerson = contactPersonService.getContactPersonByLastNameAndFirstName(event.getValue());
-            moduleCoordinatorCompany.setValue(contactPerson.getCompany().getCompanyName());
+            if(event.getValue() != null){
+                contactPerson = contactPersonService.getContactPersonByLastNameAndFirstName(event.getValue());
+                contactPersonCompany.setValue(contactPerson.getCompany().getCompanyName());
+            }
         });
 
         Button buttonNewContact = new Button();
@@ -238,7 +242,7 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
         Icon icon = new Icon(VaadinIcon.PLUS);
         buttonNewContact.setIcon(icon);
         buttonNewContact.addClickListener(newProjectEvent -> {
-            NewContactDialog dialog = new NewContactDialog();
+            NewContactDialog dialog = new NewContactDialog(contactPersonService,companyService, selectContact);
             dialog.open();
         });
 
@@ -246,12 +250,12 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
                 titleGroup, titleContact, buttonNewContact,
                 groupMemberOneFhMail, groupMemberOneName, selectContact,
                 groupMemberTwoName, groupMemberTwoFhMail, titleCompany,
-                groupMemberThreeName, groupMemberThreeFhMail,   moduleCoordinatorCompany
+                groupMemberThreeName, groupMemberThreeFhMail,   contactPersonCompany
                 );
 
         projectDetailsBottom.setColspan(titleGroup, 2);
         projectDetailsBottom.setColspan(titleCompany, 2);
-        projectDetailsBottom.setColspan(moduleCoordinatorCompany, 2);
+        projectDetailsBottom.setColspan(contactPersonCompany, 2);
         projectDetailsBottom.setColspan(selectContact, 2);
 
         projectDetailsBottom.setResponsiveSteps(
@@ -340,5 +344,14 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
         Optional<Project> projectOptional = projectService.findProjectById(projectId);
         projectOptional.ifPresent(value -> project = value);
         moduleText.setText("Modul: " + project.getModule());
+    }
+
+    public Select<String> getSelectContact() {
+        return selectContact;
+    }
+
+    public void setSelectContact() {
+        this.selectContact.clear();
+        this.selectContact.setItems(contactPersonService.getAllContactPersonNames());
     }
 }

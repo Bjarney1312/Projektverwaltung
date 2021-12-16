@@ -39,16 +39,16 @@ public class ProjektverwaltungApplication {
     @PostConstruct
     public void test(){
 
-        studentRepository.save(new Student("ivkne001", "Ivonne ","Kneißig", "kneissig.ivonne@fh-swf.de"));
+        studentRepository.save(new Student("ivkne001", "Ivonne","Kneißig", "kneissig.ivonne@fh-swf.de"));
         studentRepository.save(new Student("rague002", "Ramon","Günther", "guenther.ramonantonio@fh-swf.de"));
         studentRepository.save(new Student("mapet003", "Maren","Peterson", "peterson.marenlea@fh-swf.de"));
 
-        companyRepository.save(new Company("R & I","Im Wiesengrund","12",58636,"Iserlohn"));
-        companyRepository.save(new Company("Fachhochschule Südwestfalen","Frauenstuhlweg","31",58644,"Iserlohn"));
+        companyRepository.save(new Company("R & I","Im Wiesengrund 12",58636,"Iserlohn"));
+        companyRepository.save(new Company("Fachhochschule Südwestfalen","Frauenstuhlweg 31",58644,"Iserlohn"));
 
-        contactPersonRepository.save(new ContactPerson( "Jan-Hendrik","Moritz",companyRepository.getById(1L), "coolemail@krassemail.de"));
-        contactPersonRepository.save(new ContactPerson( "Tobias","Holke",companyRepository.getById(2L), "coolemail@krassemail.de"));
-        contactPersonRepository.save(new ContactPerson( "Matthias","Faulstich",companyRepository.getById(2L), "coolemail@krassemail.de"));
+        contactPersonRepository.save(new ContactPerson( "Jan-Hendrik","Moritz",companyRepository.getById(1L), "moritz.janhendrik@krassemail.de", "01706899352"));
+        contactPersonRepository.save(new ContactPerson( "Tobias","Holke",companyRepository.getById(2L), "holke.tobias@fh-swf.de", "0237158964"));
+        contactPersonRepository.save(new ContactPerson( "Matthias","Faulstich",companyRepository.getById(2L), "faulstich.matthias@fh-swf.de","02371564654"));
 
         List<ModuleEnum> moduleEnums = new ArrayList<>();
         moduleEnums.add(ModuleEnum.SOFTWARE_ENGINEERING);
@@ -135,6 +135,21 @@ public class ProjektverwaltungApplication {
         project2.setStatus(Status.ZUGELASSEN);
 
         projectRepository.save(project2);
+
+
+
+
+        Project project3 = projectService.getEmptyProject(ModuleEnum.SOFTWARE_ENGINEERING.label);
+
+        project3.setStudents(studentSet);
+
+        project3.setModuleCoordinator(moduleCoordinator);
+
+        ContactPerson contactPerson3 = contactPersonRepository.getById(3L);
+        project3.setContactPerson(contactPerson3);
+        project3.setProjectDescription(projectDescription);
+        project3.setStatus(Status.ZUGELASSEN);
+        projectRepository.save(project3);
 
     }
 }

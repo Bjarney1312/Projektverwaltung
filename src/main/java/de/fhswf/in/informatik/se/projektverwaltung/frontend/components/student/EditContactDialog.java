@@ -1,5 +1,6 @@
 package de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -9,12 +10,30 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.validator.RegexpValidator;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Company;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.ContactPerson;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.services.CompanyService;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ContactPersonService;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationError;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationSuccess;
+
+import javax.validation.constraints.Email;
 
 @CssImport("/themes/projektverwaltung/components/student/edit-contact-dialog.css")
 public class EditContactDialog extends Dialog {
 
-    public EditContactDialog(){
+    private ContactPerson contactPerson;
+    private Company company;
+    private int apfel;
+
+    public EditContactDialog(Project project, ProjectService projectService, ContactPersonService contactPersonService, CompanyService companyService) {
+
+        apfel = 0;
         setWidth("500px");
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
@@ -24,20 +43,30 @@ public class EditContactDialog extends Dialog {
 
         Select<String> selectContact = new Select<>();
         selectContact.setLabel("Ansprechpartner");
-        selectContact.setItems("Max Mustermann");
         selectContact.setClassName("edit-contact-dialog-selectcontact");
+        selectContact.setItems(contactPersonService.getAllContactPersonNames());
+        selectContact.setValue(project.getContactPerson().getLastName() + ", " + project.getContactPerson().getFirstName());
 
+        selectContact.addValueChangeListener(event -> {
+            contactPerson = contactPersonService.getContactPersonByLastNameAndFirstName(event.getValue());
+        });
+
+        //Wenn man neu erstellt
         TextField contactFirstName = new TextField();
         contactFirstName.setLabel("Ansprechpartner");
         contactFirstName.setPlaceholder("Vorname");
         TextField contactLastName = new TextField();
         contactLastName.setPlaceholder("Nachname");
 
-        TextField contactMail = new TextField();
+        EmailField contactMail = new EmailField();
         contactMail.setLabel("Email");
+        contactMail.setClearButtonVisible(true);
+        contactMail.setErrorMessage("Bitte eine gültige Mail angeben");
 
         TextField contactPhone = new TextField();
         contactPhone.setLabel("Telefon");
+        contactPhone.setPattern("\\d*");
+        contactPhone.setPreventInvalidInput(true);
 
         H1 titleCompany = new H1("Neues Unternehmen");
         titleCompany.setClassName("edit-contact-dialog-titlecompany");
@@ -50,16 +79,20 @@ public class EditContactDialog extends Dialog {
         companyAddress.setLabel("Straße/Hausnummer");
 
         TextField companyPlace = new TextField();
-        companyPlace.setLabel("Postleitzahl/Ort");
+        companyPlace.setLabel("Ort");
 
         TextField companyPostal = new TextField();
-        companyPostal.setLabel("Postleitzahl/Ort");
+        companyPostal.setLabel("Postleitzahl");
+        companyPostal.setPattern("\\d*");
+        companyPostal.setPreventInvalidInput(true);
 
         Select<String> selectCompany = new Select<>();
         selectCompany.setLabel("Unternehmen");
-        selectCompany.setItems("FHSWF");
+        selectCompany.setItems(companyService.getAllCompanyNames());
+        selectCompany.setPlaceholder("Unternehmen auswählen");
 
-        FormLayout newCompanyForm = new FormLayout(titleCompany, companyName,companyAddress, companyPostal, companyPlace);
+
+        FormLayout newCompanyForm = new FormLayout(titleCompany, companyName, companyAddress, companyPostal, companyPlace);
         newCompanyForm.setResponsiveSteps(
                 new FormLayout.ResponsiveStep("0", 2, FormLayout.ResponsiveStep.LabelsPosition.TOP),
                 new FormLayout.ResponsiveStep("500px", 2, FormLayout.ResponsiveStep.LabelsPosition.TOP));
@@ -76,6 +109,7 @@ public class EditContactDialog extends Dialog {
             selectCompany.setVisible(false);
             buttonNewCompany.setVisible(false);
             newCompanyForm.setVisible(true);
+            apfel = 2;
         });
         buttonNewCompany.setVisible(false);
 
@@ -97,6 +131,7 @@ public class EditContactDialog extends Dialog {
         newContact.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         newContact.setClassName("edit-contact-dialog-addnewbutton");
         newContact.addClickListener(newCompanyEvent -> {
+            apfel = 1;
             newContactForm.setVisible(true);
             newContact.setVisible(false);
             buttonNewCompany.setVisible(true);
@@ -108,7 +143,56 @@ public class EditContactDialog extends Dialog {
         Button buttonChoose = new Button("Speichern");
         buttonChoose.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonChoose.setClassName("edit-contact-dialog-button");
-        buttonChoose.addClickListener(saveContactEvent -> this.close());
+        buttonChoose.addClickListener(saveContactEvent -> {
+
+            switch (apfel) {
+                case 0 -> {
+                    if (contactPerson == null) {
+                        NotificationError notificationError = NotificationError.show("Der Ansprechpartner ist schon dem Projekt zugeordnet!");
+                        break;
+                    }
+                    project.setContactPerson(contactPerson);
+                    projectService.saveProject(project);
+                    this.close();
+                    UI.getCurrent().getPage().reload();
+
+                }
+                case 1 -> {
+                    if (contactFirstName.isEmpty() || contactLastName.isEmpty() || selectCompany.isEmpty() | contactMail.isEmpty()) {
+                        NotificationError notificationError = NotificationError.show("Bitte alle Felder ausfüllen!");
+                        break;
+                    }
+                    contactPerson = new ContactPerson(contactFirstName.getValue(), contactLastName.getValue(), companyService.getCompanyByCompanyName(selectCompany.getValue()), contactMail.getValue(), contactPhone.getValue());
+                    project.setContactPerson(contactPerson);
+                    contactPersonService.saveContactPerson(contactPerson);
+                    projectService.saveProject(project);
+                    this.close();
+                    UI.getCurrent().getPage().reload();
+
+                }
+                case 2 -> {
+                    if (contactFirstName.isEmpty() || contactLastName.isEmpty() || contactMail.isEmpty()
+                            || companyName.isEmpty() || companyAddress.isEmpty()
+                            || companyPostal.isEmpty() || companyPlace.isEmpty()) {
+
+                        NotificationError notificationError = NotificationError.show("Bitte alle Felder ausfüllen!");
+                        break;
+                    }
+                    company = new Company(companyName.getValue(), companyAddress.getValue(), Integer.parseInt(companyPostal.getValue()), companyPlace.getValue());
+                    contactPerson = new ContactPerson(contactFirstName.getValue(), contactLastName.getValue(), company, contactMail.getValue(), contactPhone.getValue());
+                    project.setContactPerson(contactPerson);
+                    companyService.saveCompany(company);
+                    contactPersonService.saveContactPerson(contactPerson);
+                    projectService.saveProject(project);
+                    this.close();
+                    UI.getCurrent().getPage().reload();
+
+                }
+                default -> {
+                    NotificationError notificationError = NotificationError.show("Es ist etwas schief gelaufen");
+                }
+            }
+        });
 
         Button buttonCancel = new Button("Abbrechen");
         buttonCancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

@@ -66,7 +66,7 @@ public class DozentProjectOverview extends VerticalLayout {
         selectModule.setItems(moduleList);
 
         RadioButtonGroup<String> projectOption = new RadioButtonGroup<>();
-        projectOption.setItems("laufende Projekte", "Projektanfragen");
+        projectOption.setItems("laufende Projekte", "Projektanfragen", "Alle Projekte");
         projectOption.setClassName("dozent-project-overview-radio");
 
         Grid<Project> grid = new Grid<>();
@@ -91,6 +91,8 @@ public class DozentProjectOverview extends VerticalLayout {
 
         grid.setItems(projectService.getAllProjectsWithoutEmpty(moduleCoordinator));
         grid.getColumns().get(0).setFooter("Freie Projektplätze: " + projectService.getAllProjectsByStatus(moduleCoordinator, Status.FREI).size());
+        projectOption.setValue("Alle Projekte"); //TODO ???
+
 
 
         selectModule.addValueChangeListener(e -> {
@@ -101,7 +103,7 @@ public class DozentProjectOverview extends VerticalLayout {
                 grid.setItems(projectService.getAllByModuleAndStatusNot(e.getValue()));
                 grid.getColumns().get(0).setFooter("Freie Projektplätze: " + projectService.getAllByStatusAndModule(Status.FREI, e.getValue()).size());
             }
-            projectOption.setValue(null);
+            projectOption.setValue("Alle Projekte");
         });
 
         projectOption.addValueChangeListener(e -> {
@@ -110,22 +112,33 @@ public class DozentProjectOverview extends VerticalLayout {
             }
 
             if (selectModule.getValue() == null || selectModule.getValue().equals("Alle Module")) {
-                if (e.getValue().equals("laufende Projekte")) {
-                    grid.setItems(projectService.getAllProjectsByStatus(moduleCoordinator, Status.ZUGELASSEN));
-                } else {
-                    List<Project> test = new ArrayList<>();
-                    test.addAll(projectService.getAllProjectsByStatus(moduleCoordinator, Status.ANFRAGE));
-                    test.addAll(projectService.getAllProjectsByStatus(moduleCoordinator, Status.ERGAENZUNG));
-                    grid.setItems(test);
+                switch (e.getValue()) {
+                    case "laufende Projekte" -> grid.setItems(projectService.getAllProjectsByStatus(moduleCoordinator, Status.ZUGELASSEN));
+                    case "Projektanfragen" -> {
+                        List<Project> test = new ArrayList<>();
+                        test.addAll(projectService.getAllProjectsByStatus(moduleCoordinator, Status.ANFRAGE));
+                        test.addAll(projectService.getAllProjectsByStatus(moduleCoordinator, Status.ERGAENZUNG));
+                        grid.setItems(test);
+                    }
+                    case "Alle Projekte" -> grid.setItems(projectService.getAllProjectsWithoutEmpty(moduleCoordinator));
                 }
-            } else {
-                if (e.getValue().equals("laufende Projekte")) {
-                    grid.setItems(projectService.getAllByStatusAndModule(Status.ZUGELASSEN, selectModule.getValue()));
-                } else {
-                    List<Project> test = new ArrayList<>();
-                    test.addAll(projectService.getAllByStatusAndModule(Status.ANFRAGE, selectModule.getValue()));
-                    test.addAll(projectService.getAllByStatusAndModule(Status.ERGAENZUNG, selectModule.getValue()));
-                    grid.setItems(test);
+            }
+            else {
+                switch (e.getValue()) {
+                    case "laufende Projekte" -> grid.setItems(projectService.getAllByStatusAndModule(Status.ZUGELASSEN, selectModule.getValue()));
+                    case "Projektanfragen" -> {
+                        List<Project> projectList = new ArrayList<>();
+                        projectList.addAll(projectService.getAllByStatusAndModule(Status.ANFRAGE, selectModule.getValue()));
+                        projectList.addAll(projectService.getAllByStatusAndModule(Status.ERGAENZUNG, selectModule.getValue()));
+                        grid.setItems(projectList);
+                    }
+                    case "Alle Projekte" -> {
+                        List<Project> projectListAll = new ArrayList<>();
+                        projectListAll.addAll(projectService.getAllByStatusAndModule(Status.ZUGELASSEN, selectModule.getValue()));
+                        projectListAll.addAll(projectService.getAllByStatusAndModule(Status.ANFRAGE, selectModule.getValue()));
+                        projectListAll.addAll(projectService.getAllByStatusAndModule(Status.ERGAENZUNG, selectModule.getValue()));
+                        grid.setItems(projectListAll);
+                    }
                 }
             }
         });

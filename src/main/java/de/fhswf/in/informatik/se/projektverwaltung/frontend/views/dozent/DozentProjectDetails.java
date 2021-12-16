@@ -10,6 +10,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status;
+import de.fhswf.in.informatik.se.projektverwaltung.backend.services.CompanyService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ContactPersonService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.StudentService;
@@ -27,19 +28,24 @@ public class DozentProjectDetails extends VerticalLayout implements BeforeEnterO
     private final ProjectService projectService;
     private final StudentService studentService;
     private final ContactPersonService contactPersonService;
+    private final CompanyService companyService;
+
     private Project project;
     private Long projectId;
 
-    public DozentProjectDetails(ProjectService projectService, StudentService studentService, ContactPersonService contactPersonService){
+    public DozentProjectDetails(ProjectService projectService, StudentService studentService, ContactPersonService contactPersonService, CompanyService companyService){
 
         this.projectService = projectService;
         this.studentService = studentService;
         this.contactPersonService = contactPersonService;
+        this.companyService = companyService;
     }
 
     private void createDozentProjectDetails(){
 
-        ProjectDetails projectDetails = new ProjectDetails(project);
+        ProjectDetails projectDetails = new ProjectDetails(project, projectService, contactPersonService, companyService);
+
+        projectDetails.getButtonEditContact().setVisible(false);
 
         HorizontalLayout buttonBox = new HorizontalLayout();
         buttonBox.addClassName("dozent-project-details-buttonbox");

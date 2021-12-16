@@ -21,14 +21,12 @@ public class Company {
 
 	private String companyName;
 	private String street;
-	private String houseNumber;
 	private int postalCode;
 	private String location;
 
-	public Company(String CompanyName, String street, String houseNumber, int postalCode, String location) {
+	public Company(String CompanyName, String street, int postalCode, String location) {
 		this.companyName = CompanyName;
 		this.street = street;
-		this.houseNumber = houseNumber;
 		this.postalCode = postalCode;
 		this.location = location;
 	}
@@ -44,9 +42,6 @@ public class Company {
 		return street;
 	}
 
-	public String getHouseNumber() {
-		return houseNumber;
-	}
 
 	public int getPostalCode() {
 		return postalCode;

@@ -105,9 +105,12 @@ public class ProjectDetails extends VerticalLayout {
 
         H3 sketchTitle = new H3("Projektskizze");
         Label projectSketch = new Label(project.getProjectDescription().getSketch());
+        projectSketch.setClassName("project-details-projectsketch");
 
         H3 backgroundTitle = new H3("Projekthintergrund");
         Label projectBackground = new Label(project.getProjectDescription().getDescriptionBackground());
+        backgroundTitle.setClassName("project-details-backgroundtitle");
+
 
         H3 descriptopnTitle = new H3("Projektbeschreibung");
         byte[] pdfByte = project.getProjectDescription().getDescriptionProjectContent();

@@ -1,5 +1,6 @@
 package de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -9,9 +10,9 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
-import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.ModuleCoordinator;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationError;
 
 /**
  * Die Klasse DeleteFreeProjectsDialog öffnet auf der Startseite des Dozenten einen Dialog
@@ -22,9 +23,7 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectServi
 @CssImport("/themes/projektverwaltung/components/dozent/delete-free-projects.css")
 public class DeleteFreeProjectsDialog extends Dialog {
 
-    private Button buttonAddProjects;
-
-    public DeleteFreeProjectsDialog(ModuleCoordinator moduleCoordinator, ProjectService projectService, String modulename){
+    public DeleteFreeProjectsDialog(ProjectService projectService, String modulename){
 
         setWidth("510px");
         setCloseOnEsc(false);
@@ -46,12 +45,23 @@ public class DeleteFreeProjectsDialog extends Dialog {
 
         HorizontalLayout buttonBox = new HorizontalLayout();
 
-        buttonAddProjects = new Button("Entfernen");
+        Button buttonAddProjects = new Button("Entfernen");
         buttonAddProjects.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonAddProjects.setClassName("delete-free-projects-buttons");
-        buttonAddProjects.setEnabled(false);
         buttonAddProjects.addClickListener(newProjectEvent -> {
-
+            if(numberOfProjects.getValue() > numberOfProjects.getMax() || numberOfProjects.getValue() < 1){
+                NotificationError notificationError = NotificationError.show("Die maximale Anzahl beträgt "
+                        + numberOfProjects.getMax() + " !");
+                return;
+            }
+            try {
+                projectService.deleteFreeProjects(modulename, numberOfProjects.getValue());
+                this.close();
+                UI.getCurrent().getPage().reload();
+            }
+            catch(Exception e){
+                NotificationError notificationError = NotificationError.show("Etwas ist schief gelaufen!");
+            }
         });
 
         Button buttonCancel = new Button("Abbrechen");

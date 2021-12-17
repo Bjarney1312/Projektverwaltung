@@ -48,20 +48,21 @@ public class StudentProjectOverview extends VerticalLayout {
         title.setId("title-projektverwaltung-student");
 
         Grid<Project> grid = new Grid<>();
-        grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
+        grid.addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
         grid.setClassName("student-project-overview-grid");
 
         Student student = studentService.getStudentByUsername();
 
         grid.setItems(this.projectService.getAllProjectsByStudents(student));
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        grid.addColumn(projectTitle -> projectTitle.getProjectDescription().getTitle()).setHeader("Projekttitel");
+        grid.addColumn(projectTitle -> projectTitle.getProjectDescription().getTitle()).setHeader("Projekttitel").setResizable(true);
 
         grid.addColumn(Project::getModule).setHeader("Modul");
         grid.addColumn(Project::getStatus).setHeader("Projektstatus");
         grid.addColumn(moduleCoordinator ->
                 moduleCoordinator.getModuleCoordinator().getLastName()
                         + ", " + moduleCoordinator.getModuleCoordinator().getFirstName()).setHeader("Modulbeauftragter");
+
         grid.addColumn(contactPerson ->
                 contactPerson.getContactPerson().getLastName()
                         + ", " + contactPerson.getContactPerson().getFirstName()).setHeader("Ansprechpartner");

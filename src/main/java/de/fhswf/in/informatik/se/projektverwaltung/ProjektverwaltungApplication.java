@@ -93,7 +93,7 @@ public class ProjektverwaltungApplication {
         project.setContactPerson(contactPerson);
 
         //Projektbeschreibung
-        ProjectDescription projectDescription = new ProjectDescription("Mitfahrgelegenheit","Krasse Skizze","Krasse Beschreibung",null);
+        ProjectDescription projectDescription = new ProjectDescription("Krasses Projekt","Krasse Skizze","Krasse Beschreibung",null);
 
         project.setProjectDescription(projectDescription);
 

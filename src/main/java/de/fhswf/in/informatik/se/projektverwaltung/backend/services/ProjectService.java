@@ -132,6 +132,18 @@ public class ProjectService {
         }
         return projectList;
     }
+
+    /**
+     *
+     * @param moduleEnum
+     * @param anzahl
+     */
+    public void deleteFreeProjects(String moduleEnum, int anzahl) {
+        List<Project> projectList = repository.getAllByModuleAndStatus(moduleEnum,Status.FREI);
+        for (int i = 0; i < anzahl; i++) {
+            repository.delete(projectList.get(i));
+        }
+    }
 }
 
 

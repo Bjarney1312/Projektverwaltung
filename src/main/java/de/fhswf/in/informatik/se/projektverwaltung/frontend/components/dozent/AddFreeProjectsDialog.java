@@ -1,5 +1,6 @@
 package de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -12,6 +13,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.ModuleEnum;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ModuleCoordinatorService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,7 @@ public class AddFreeProjectsDialog extends Dialog {
         });
 
         IntegerField numberOfProjects = new IntegerField();
-        numberOfProjects.setValue(1);
+        numberOfProjects.setValue(10);
         numberOfProjects.setHasControls(true);
         numberOfProjects.setMin(1);
         numberOfProjects.setMax(100);
@@ -66,9 +68,14 @@ public class AddFreeProjectsDialog extends Dialog {
         buttonAddProjects.setClassName("add-free-projects-buttons");
         buttonAddProjects.setEnabled(false);
         buttonAddProjects.addClickListener(newProjectEvent -> {
+            if(numberOfProjects.getValue() > numberOfProjects.getMax() || numberOfProjects.getValue() < 1){
+                NotificationError notificationError = NotificationError.show("Die maximale Anzahl beträgt " + numberOfProjects.getMax() + " !");
+                return;
+            }
             projectService.initializeProjects(moduleCoordinatorService.findByUsername().getModulByModulName(
                     selectModule.getValue()), numberOfProjects.getValue());
             this.close();
+            UI.getCurrent().getPage().reload();
         });
 
         Button buttonCancel = new Button("Abbrechen");

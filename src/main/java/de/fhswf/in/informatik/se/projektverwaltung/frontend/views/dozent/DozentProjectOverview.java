@@ -8,7 +8,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -16,6 +15,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteParameters;
@@ -28,6 +29,7 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectServi
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent.AddAppointmentsDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent.AddFreeProjectsDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent.DeleteFreeProjectsDialog;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent.GroupMemberLayout;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 
 import java.util.ArrayList;
@@ -80,26 +82,28 @@ public class DozentProjectOverview extends VerticalLayout {
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        grid.addColumn(projectTitle -> projectTitle.getProjectDescription().getTitle()).setHeader("Projekttitel");
+        grid.addColumn(projectTitle -> projectTitle.getProjectDescription().getTitle())
+                .setHeader("Projekttitel")
+                .setResizable(true)
+                .setSortable(true);
 
-        grid.addColumn(Project::getModule).setHeader("Modul");
-        grid.addColumn(Project::getStatus).setHeader("Projektstatus");
-        grid.addColumn(mc ->
-                mc.getModuleCoordinator().getLastName()
-                        + ", " + mc.getModuleCoordinator().getFirstName()).setHeader("Modulbeauftragter");
+        grid.addColumn(Project::getModule).setHeader("Modul").setSortable(true);
+        grid.addColumn(Project::getStatus).setHeader("Projektstatus").setSortable(true);
 
         grid.addColumn(contactPerson ->
                 contactPerson.getContactPerson().getLastName()
-                        + ", " + contactPerson.getContactPerson().getFirstName()).setHeader("Ansprechpartner");
+                        + ", " + contactPerson.getContactPerson().getFirstName()).setHeader("Ansprechpartner").setSortable(true);
+
+        grid.addColumn(createToggleDetailsRenderer(grid));
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-
+        grid.getColumns().get(0).setWidth("200");
         grid.setItems(projectService.getAllProjectsWithoutEmpty(moduleCoordinator));
 
         HorizontalLayout gridFooterLayout = new HorizontalLayout();
 
         Label freeProjectsLabel = new Label();
-        freeProjectsLabel.setText("Freie Projektplätze: " +  projectService.getAllProjectsByStatus(moduleCoordinator, Status.FREI).size());
+        freeProjectsLabel.setText("Freie Projektplätze: " + projectService.getAllProjectsByStatus(moduleCoordinator, Status.FREI).size());
         freeProjectsLabel.setClassName("dozent-project-overview-freeprojects");
 
         Button deleteFreeProjectButton = new Button();
@@ -108,13 +112,17 @@ public class DozentProjectOverview extends VerticalLayout {
         deleteFreeProjectButton.setClassName("dozent-project-overview-trash");
         deleteFreeProjectButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
         deleteFreeProjectButton.addClickListener(e -> {
-            DeleteFreeProjectsDialog deleteProjects = new DeleteFreeProjectsDialog(moduleCoordinator, projectService, selectModule.getValue());
+            DeleteFreeProjectsDialog deleteProjects = new DeleteFreeProjectsDialog(projectService, selectModule.getValue());
             deleteProjects.open();
         });
 
         gridFooterLayout.add(deleteFreeProjectButton, freeProjectsLabel);
 
         grid.getColumns().get(0).setFooter(gridFooterLayout);
+
+        //Für das aufklappen im Grid
+        grid.setItemDetailsRenderer(createGroupMemberDetails());
+        grid.setDetailsVisibleOnClick(false);
 
 
         projectOption.setValue("Alle Projekte");
@@ -127,7 +135,7 @@ public class DozentProjectOverview extends VerticalLayout {
             } else {
                 grid.setItems(projectService.getAllByModuleAndStatusNot(e.getValue()));
                 freeProjectsLabel.setText("Freie Projektplätze: " + projectService.getAllByStatusAndModule(Status.FREI, e.getValue()).size());
-                deleteFreeProjectButton.setVisible(true);
+                deleteFreeProjectButton.setVisible(projectService.getAllByStatusAndModule(Status.FREI, e.getValue()).size() != 0);
             }
             projectOption.setValue("Alle Projekte");
         });
@@ -148,8 +156,7 @@ public class DozentProjectOverview extends VerticalLayout {
                     }
                     case "Alle Projekte" -> grid.setItems(projectService.getAllProjectsWithoutEmpty(moduleCoordinator));
                 }
-            }
-            else {
+            } else {
                 switch (e.getValue()) {
                     case "laufende Projekte" -> grid.setItems(projectService.getAllByStatusAndModule(Status.ZUGELASSEN, selectModule.getValue()));
                     case "Projektanfragen" -> {
@@ -195,18 +202,16 @@ public class DozentProjectOverview extends VerticalLayout {
         });
 
         grid.addSelectionListener(event -> {
-            if(event.getAllSelectedItems().isEmpty()){
+            if (event.getAllSelectedItems().isEmpty()) {
                 buttonProjectDetails.setEnabled(false);
                 buttonNewAppointment.setEnabled(false);
-            }
-            else{
+            } else {
                 buttonProjectDetails.setEnabled(true);
                 event.getFirstSelectedItem().ifPresent(project -> {
                     projectId = project.getId();
-                    if(project.getStatus().equals(Status.ANFRAGE)){
+                    if (project.getStatus().equals(Status.ANFRAGE)) {
                         buttonProjectDetails.setText("Projekt bearbeiten");
-                    }
-                    else{
+                    } else {
                         buttonProjectDetails.setText("Projekt ansehen");
                     }
                     buttonNewAppointment.setEnabled(project.getStatus().equals(Status.ZUGELASSEN));
@@ -222,4 +227,22 @@ public class DozentProjectOverview extends VerticalLayout {
         div.setClassName("dozent-project-overview");
         add(div);
     }
+
+
+    private static TemplateRenderer<Project> createToggleDetailsRenderer(
+            Grid<Project> grid) {
+        return TemplateRenderer.<Project>of(
+                        "<vaadin-button theme=\"tertiary\" on-click=\"handleClick\"> Gruppenmitglieder anzeigen </vaadin-button>")
+                .withEventHandler("handleClick", project -> grid
+                        .setDetailsVisible(project,
+                                !grid.isDetailsVisible(project)));
+    }
+
+
+    private static ComponentRenderer<GroupMemberLayout, Project> createGroupMemberDetails() {
+        return new ComponentRenderer<>(
+                GroupMemberLayout::new,
+                GroupMemberLayout::setGroupMember);
+    }
 }
+

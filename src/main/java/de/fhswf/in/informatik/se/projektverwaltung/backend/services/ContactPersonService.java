@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Die Klasse ContactPersonService implementiert primär die Methoden aus dem Interface @{@link ContactPersonRepository}
  * um diese im Frontend dann verwenden zu können.
@@ -31,7 +30,7 @@ public class ContactPersonService {
         return repository.findAll();
     }
 
-    public ContactPerson getContactPerson(Long id){
+    public ContactPerson getContactPersonById(Long id){
         return repository.getById(id);
     }
 

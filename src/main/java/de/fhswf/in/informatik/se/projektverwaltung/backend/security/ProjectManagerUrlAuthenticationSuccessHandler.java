@@ -31,7 +31,6 @@ public class ProjectManagerUrlAuthenticationSuccessHandler
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response, Authentication authentication)
             throws IOException {
-
         handle(request, response, authentication);
         clearAuthenticationAttributes(request);
     }
@@ -50,7 +49,6 @@ public class ProjectManagerUrlAuthenticationSuccessHandler
                             + targetUrl);
             return;
         }
-
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
@@ -67,7 +65,6 @@ public class ProjectManagerUrlAuthenticationSuccessHandler
                 return roleTargetUrlMap.get(authorityName);
             }
         }
-
         throw new IllegalStateException();
     }
 

@@ -124,14 +124,18 @@ public class NewContactDialog extends Dialog {
         buttonChoose.setClassName("new-contact-dialog-button");
         buttonChoose.addClickListener(saveContactEvent -> {
             if(!addContactCompanyCheck){
-                if (contactFirstName.isEmpty() || contactLastName.isEmpty() || selectCompany.isEmpty() | contactMail.isEmpty()) {
+                if (contactFirstName.isEmpty() || contactLastName.isEmpty()
+                        || selectCompany.isEmpty() | contactMail.isEmpty()) {
                     NotificationError notificationError = NotificationError.show("Bitte alle Felder ausfüllen!");
                     return;
                 }
-                contactPerson = new ContactPerson(contactFirstName.getValue(), contactLastName.getValue(), companyService.getCompanyByCompanyName(selectCompany.getValue()), contactMail.getValue(), contactPhone.getValue());
-                contactPersonService.saveContactPerson(contactPerson);
-                NotificationSuccess notificationSuccess = NotificationSuccess.show("Ansprechpartner erfolgreich gespeichert!");
-                this.close();
+                contactPerson = new ContactPerson(
+                        contactFirstName.getValue(),
+                        contactLastName.getValue(),
+                        companyService.getCompanyByCompanyName(
+                                selectCompany.getValue()),
+                                contactMail.getValue(),
+                                contactPhone.getValue());
             }
             else{
                 if (contactFirstName.isEmpty() || contactLastName.isEmpty() || contactMail.isEmpty()
@@ -141,19 +145,26 @@ public class NewContactDialog extends Dialog {
                     NotificationError notificationError = NotificationError.show("Bitte alle Felder ausfüllen!");
                     return;
                 }
-                company = new Company(companyName.getValue(), companyAddress.getValue(), Integer.parseInt(companyPostal.getValue()), companyPlace.getValue());
-                contactPerson = new ContactPerson(contactFirstName.getValue(), contactLastName.getValue(), company, contactMail.getValue(), contactPhone.getValue());
+                company = new Company(
+                        companyName.getValue(),
+                        companyAddress.getValue(),
+                        Integer.parseInt(companyPostal.getValue()),
+                        companyPlace.getValue());
+                contactPerson = new ContactPerson(
+                        contactFirstName.getValue(),
+                        contactLastName.getValue(),
+                        company,
+                        contactMail.getValue(),
+                        contactPhone.getValue());
                 companyService.saveCompany(company);
-                contactPersonService.saveContactPerson(contactPerson);
-                NotificationSuccess notificationSuccess = NotificationSuccess.show("Ansprechpartner erfolgreich gespeichert!");
-                this.close();
             }
-
+            contactPersonService.saveContactPerson(contactPerson);
+            NotificationSuccess notificationSuccess = NotificationSuccess.show("Ansprechpartner erfolgreich gespeichert!");
+            this.close();
 
             selectContact.clear();
             selectContact.setItems(contactPersonService.getAllContactPersonNames());
             selectContact.setValue(contactPerson.getLastName() + ", " + contactPerson.getFirstName());
-
         });
 
         Button buttonCancel = new Button("Abbrechen");

@@ -1,13 +1,9 @@
 package de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobjects;
 
-
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.Embeddable;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Locale;
 
 /**
  * Die Klasse PresentationDates speichert die Präsentationstermine zu einem Projekt.

@@ -1,6 +1,5 @@
 package de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent;
 
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -10,8 +9,6 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.NumberField;
-import com.vaadin.flow.router.RouteParameters;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.ModuleEnum;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ModuleCoordinatorService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
@@ -19,18 +16,18 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectServi
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Die Klasse AddFreeProjectsDialog öffnet auf der Startseite des Dozenten einen Dialog
+ * um neue, freie Projektplätze zu einem Modul zu vergeben.
+ *
+ * @author Ivonne Kneißig & Ramon Günther
+ */
 @CssImport("/themes/projektverwaltung/components/dozent/add-free-projects.css")
 public class AddFreeProjectsDialog extends Dialog {
-
-    private final ModuleCoordinatorService moduleCoordinatorService;
-    private final ProjectService projectService;
 
     private Button buttonAddProjects;
 
     public AddFreeProjectsDialog(ModuleCoordinatorService moduleCoordinatorService, ProjectService projectService){
-
-        this.moduleCoordinatorService = moduleCoordinatorService;
-        this.projectService = projectService;
 
         setWidth("510px");
         setCloseOnEsc(false);
@@ -69,7 +66,8 @@ public class AddFreeProjectsDialog extends Dialog {
         buttonAddProjects.setClassName("add-free-projects-buttons");
         buttonAddProjects.setEnabled(false);
         buttonAddProjects.addClickListener(newProjectEvent -> {
-            projectService.initializeProjects(moduleCoordinatorService.findByUsername().getModulByModulName(selectModule.getValue()), numberOfProjects.getValue());
+            projectService.initializeProjects(moduleCoordinatorService.findByUsername().getModulByModulName(
+                    selectModule.getValue()), numberOfProjects.getValue());
             this.close();
         });
 

@@ -13,21 +13,22 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
-import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationError;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationPrimary;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.dozent.DozentProjectOverview;
 
+/**
+ * Die Klasse ProjectModificationDialog öffnet in der View zur Ansicht der Projektdetails beim Dozenten
+ * einen Dialog zum Fordern einer Ergänzung zu einem Projekt. Dabei muss der Dozent einen Kommentar
+ * abgeben, warum eine Ergänzung gefordert wird.
+ *
+ * @author Ivonne Kneißig & Ramon Günther
+ */
 @CssImport("/themes/projektverwaltung/components/dozent/project-modification-dialog.css")
 public class ProjectModificationDialog extends Dialog {
 
     private static final int COMMENT_MIN_LENGTH = 10;
 
-    private final ProjectService projectService;
-    private Project project;
-
     public ProjectModificationDialog(ProjectService projectService, Project project){
-        this.projectService = projectService;
-        this.project = project;
 
         setWidth("500px");
         setCloseOnEsc(false);
@@ -55,14 +56,9 @@ public class ProjectModificationDialog extends Dialog {
             this.close();
             UI.getCurrent().navigate(DozentProjectOverview.class);
         });
-        comment.addValueChangeListener(addCommentEvent -> {
-            if (!addCommentEvent.getValue().isEmpty() && addCommentEvent.getValue().length() >= COMMENT_MIN_LENGTH){
-                buttonSave.setEnabled(true);
-            }
-            else {
-                buttonSave.setEnabled(false);
-            }
-        });
+        comment.addValueChangeListener(addCommentEvent -> buttonSave.setEnabled(
+                !addCommentEvent.getValue().isEmpty() &&
+                        addCommentEvent.getValue().length() >= COMMENT_MIN_LENGTH));
 
         Button buttonCancel = new Button("Abbrechen");
         buttonCancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

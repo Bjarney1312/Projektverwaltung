@@ -1,0 +1,25 @@
+.delete-free-projects-title{
+    margin-top: -5px;
+    font-size: 15pt;
+}
+
+.delete-free-projects-numbers{
+    width: 414px;
+    margin-left: 23px;
+}
+
+.delete-free-projects-buttons{
+    width: 200px;
+    margin-top: 20px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.delete-free-projects-buttonbox{
+    margin-top: 20px;
+    margin-left: 15px;
+}
+
+.delete-free-projects-modulelabel{
+    margin-left: 25px;
+}

@@ -42,7 +42,6 @@ public class Company {
 		return street;
 	}
 
-
 	public int getPostalCode() {
 		return postalCode;
 	}

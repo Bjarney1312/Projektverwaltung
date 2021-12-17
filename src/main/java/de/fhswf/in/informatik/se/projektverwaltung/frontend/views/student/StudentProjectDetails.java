@@ -13,13 +13,9 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.CompanyService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ContactPersonService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
-import de.fhswf.in.informatik.se.projektverwaltung.backend.services.StudentService;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.ProjectDetails;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.EditProjectDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
-import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.dozent.DozentProjectOverview;
-import net.bytebuddy.implementation.bytecode.Throw;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
@@ -29,16 +25,14 @@ import java.util.Optional;
 public class StudentProjectDetails extends VerticalLayout implements BeforeEnterObserver, AfterNavigationObserver {
 
     private final ProjectService projectService;
-    private final StudentService studentService;
     private final ContactPersonService contactPersonService;
     private final CompanyService companyService;
 
     private Project project;
     private Long projectId;
 
-    public StudentProjectDetails(ProjectService projectService, StudentService studentService, ContactPersonService contactPersonService, CompanyService companyService){
+    public StudentProjectDetails(ProjectService projectService, ContactPersonService contactPersonService, CompanyService companyService){
         this.projectService = projectService;
-        this.studentService = studentService;
         this.contactPersonService = contactPersonService;
         this.companyService = companyService;
     }
@@ -83,13 +77,8 @@ public class StudentProjectDetails extends VerticalLayout implements BeforeEnter
 
     @Override
     public void afterNavigation(AfterNavigationEvent afterNavigationEvent) {
-        //TODO: Man kann über die Url sich einfach jedes Projekt ansehen unabhängig vom Login und ich kann auch 500 suchen z.b.
-        //TODO: Ich kann genauso gut auf die DozentenUrl zugreifen und wenn man dann schließt fliegt eine Exception
-
         Optional<Project> projectOptional = projectService.findProjectById(projectId);
-
         projectOptional.ifPresent(value -> project = value);
-
         createStudentProjectDetails();
     }
 

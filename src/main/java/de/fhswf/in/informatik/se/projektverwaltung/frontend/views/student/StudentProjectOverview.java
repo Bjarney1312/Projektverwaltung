@@ -19,7 +19,6 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectServi
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.StudentService;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.NewProjectRequestDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,14 +38,11 @@ public class StudentProjectOverview extends VerticalLayout {
 
     private final ProjectService projectService;
 
-    private final StudentService studentService;
-
     private Long projectId;
 
     public StudentProjectOverview(ProjectService projectService, StudentService studentService){
 
         this.projectService = projectService;
-        this.studentService = studentService;
 
         H1 title = new H1("Projektverwaltung");
         title.setId("title-projektverwaltung-student");
@@ -88,12 +84,7 @@ public class StudentProjectOverview extends VerticalLayout {
         buttonProjectDetails.setEnabled(false);
         buttonProjectDetails.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonProjectDetails.setClassName("student-projekt-overview-button");
-        buttonProjectDetails.addClickListener(projectDetailsEvent -> {
-            List<Project> projectList= new ArrayList<>(grid.getSelectedItems());
-            UI.getCurrent().navigate(StudentProjectDetails.class, new RouteParameters("projectid", projectId.toString()));
-        });
 
-        //TODO: Variante 1
         grid.addSelectionListener(event -> {
             if(event.getAllSelectedItems().isEmpty()){
                 buttonProjectDetails.setEnabled(false);
@@ -103,6 +94,9 @@ public class StudentProjectOverview extends VerticalLayout {
                 event.getFirstSelectedItem().ifPresent(project -> projectId = project.getId());
             }
         });
+
+        buttonProjectDetails.addClickListener(projectDetailsEvent ->
+            UI.getCurrent().navigate(StudentProjectDetails.class, new RouteParameters("projectid", projectId.toString())));
 
         HorizontalLayout buttonBox = new HorizontalLayout();
         buttonBox.setClassName("student-projekt-overview-buttonbox");

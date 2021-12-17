@@ -14,7 +14,11 @@ import javax.persistence.Embeddable;
 public class ProjectDescription {
 
 	private String title;
+
+	@Column(length = 2000)
 	private String sketch;
+
+	@Column(length = 4000)
 	private String descriptionBackground;
 
 	@Column(length = 10485760)

@@ -20,7 +20,6 @@ public class ConfigureUIServiceInitListener implements VaadinServiceInitListener
     }
 
     private void authenticateNavigation(BeforeEnterEvent event){
-
         if(!LoginView.class.equals(event.getNavigationTarget())
             && !SecurityUtils.isUserLoggedIn()) {
 

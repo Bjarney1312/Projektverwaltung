@@ -4,10 +4,7 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.ModuleCoordi
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.ModuleEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public interface ModuleCoordinatorRepository extends JpaRepository<ModuleCoordinator, Long> {
     ModuleCoordinator findModuleCoordinatorByModuleList(ModuleEnum modulname);
     ModuleCoordinator findByUsername(String username);
-
 }

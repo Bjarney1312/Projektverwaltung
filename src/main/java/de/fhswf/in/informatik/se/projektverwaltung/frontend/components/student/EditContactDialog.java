@@ -12,7 +12,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.validator.RegexpValidator;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Company;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.ContactPerson;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
@@ -20,10 +19,15 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.services.CompanyServi
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ContactPersonService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationError;
-import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationSuccess;
 
-import javax.validation.constraints.Email;
-
+/**
+ * Die Klasse EditContactDialog öffnet in der View zur Ansicht der Projektdetails beim Studenten
+ * einen Dialog zum Bearbeiten des Ansprechpartners. Hierbei kann ein bestehender Ansprechpartner
+ * gewählt werden, oder ein neuer angelegt werden. Außerdem kann bei einem neuen Ansprechpartner
+ * ein bestehendes Unternehmen zugeordnet werden, oder ebenfalls ein neues erfasst werden.
+ *
+ * @author Ivonne Kneißig & Ramon Günther
+ */
 @CssImport("/themes/projektverwaltung/components/student/edit-contact-dialog.css")
 public class EditContactDialog extends Dialog {
 
@@ -47,9 +51,7 @@ public class EditContactDialog extends Dialog {
         selectContact.setItems(contactPersonService.getAllContactPersonNames());
         selectContact.setValue(project.getContactPerson().getLastName() + ", " + project.getContactPerson().getFirstName());
 
-        selectContact.addValueChangeListener(event -> {
-            contactPerson = contactPersonService.getContactPersonByLastNameAndFirstName(event.getValue());
-        });
+        selectContact.addValueChangeListener(event -> contactPerson = contactPersonService.getContactPersonByLastNameAndFirstName(event.getValue()));
 
         //Wenn man neu erstellt
         TextField contactFirstName = new TextField();
@@ -158,11 +160,18 @@ public class EditContactDialog extends Dialog {
 
                 }
                 case 1 -> {
-                    if (contactFirstName.isEmpty() || contactLastName.isEmpty() || selectCompany.isEmpty() | contactMail.isEmpty()) {
+                    if (contactFirstName.isEmpty() || contactLastName.isEmpty() ||
+                            selectCompany.isEmpty() || contactMail.isEmpty()) {
                         NotificationError notificationError = NotificationError.show("Bitte alle Felder ausfüllen!");
                         break;
                     }
-                    contactPerson = new ContactPerson(contactFirstName.getValue(), contactLastName.getValue(), companyService.getCompanyByCompanyName(selectCompany.getValue()), contactMail.getValue(), contactPhone.getValue());
+                    contactPerson = new ContactPerson(
+                            contactFirstName.getValue(),
+                            contactLastName.getValue(),
+                            companyService.getCompanyByCompanyName(
+                                    selectCompany.getValue()),
+                                    contactMail.getValue(),
+                                    contactPhone.getValue());
                     project.setContactPerson(contactPerson);
                     contactPersonService.saveContactPerson(contactPerson);
                     projectService.saveProject(project);
@@ -178,8 +187,17 @@ public class EditContactDialog extends Dialog {
                         NotificationError notificationError = NotificationError.show("Bitte alle Felder ausfüllen!");
                         break;
                     }
-                    company = new Company(companyName.getValue(), companyAddress.getValue(), Integer.parseInt(companyPostal.getValue()), companyPlace.getValue());
-                    contactPerson = new ContactPerson(contactFirstName.getValue(), contactLastName.getValue(), company, contactMail.getValue(), contactPhone.getValue());
+                    company = new Company(
+                            companyName.getValue(),
+                            companyAddress.getValue(),
+                            Integer.parseInt(companyPostal.getValue()),
+                            companyPlace.getValue());
+                    contactPerson = new ContactPerson(
+                            contactFirstName.getValue(),
+                            contactLastName.getValue(),
+                            company,
+                            contactMail.getValue(),
+                            contactPhone.getValue());
                     project.setContactPerson(contactPerson);
                     companyService.saveCompany(company);
                     contactPersonService.saveContactPerson(contactPerson);

@@ -43,20 +43,6 @@ public class ProjectService {
     }
 
     /**
-     * Findet alle beteiligten Studenten in dem gesuchten Projekt.
-     *
-     * @param id des Projekts
-     * @return eine Liste der Studenten
-     */
-    public List<Student> getStudents(Long id) {
-
-        Set<Student> studentSet = repository.findById(id).get().getStudents();
-
-        return new ArrayList<>(studentSet);
-    }
-
-
-    /**
      * Die Methode legt eine variable Anzahl von leeren Projekten zum
      * gewünschten Modul an.
      *

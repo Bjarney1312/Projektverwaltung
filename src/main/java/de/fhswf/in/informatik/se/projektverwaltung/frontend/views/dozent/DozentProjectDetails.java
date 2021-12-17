@@ -13,30 +13,35 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.CompanyService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ContactPersonService;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
-import de.fhswf.in.informatik.se.projektverwaltung.backend.services.StudentService;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationPrimary;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.ProjectDetails;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent.ProjectModificationDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 import java.util.Optional;
 
+/**
+ * Die Klasse DozentProjectDetails zeigt die Detailansicht für ein gewähltes
+ * Projekt an. Nur beim Status Anfrage, kann der Dozent auswählen, ob der den Antrag
+ * annehmen, ablehnen oder eine Ergänzung fordern möchte. Ansonsten können die Projekt-
+ * details nur angesehen werden.
+ *
+ * @author Ivonne Kneißig & Ramon Günther
+ */
 @Route(value = "projektdetails_dozent/:projectid", layout = MainView.class)
 @PageTitle("Projektverwaltung | Projektdetails")
 @CssImport("/themes/projektverwaltung/views/dozent/dozent-project-details.css")
 public class DozentProjectDetails extends VerticalLayout implements BeforeEnterObserver, AfterNavigationObserver {
 
     private final ProjectService projectService;
-    private final StudentService studentService;
     private final ContactPersonService contactPersonService;
     private final CompanyService companyService;
 
     private Project project;
     private Long projectId;
 
-    public DozentProjectDetails(ProjectService projectService, StudentService studentService, ContactPersonService contactPersonService, CompanyService companyService){
+    public DozentProjectDetails(ProjectService projectService, ContactPersonService contactPersonService, CompanyService companyService){
 
         this.projectService = projectService;
-        this.studentService = studentService;
         this.contactPersonService = contactPersonService;
         this.companyService = companyService;
     }

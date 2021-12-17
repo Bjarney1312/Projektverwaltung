@@ -24,9 +24,9 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobjects.ProjectDescription;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.*;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationError;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationSuccess;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.student.NewContactDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -51,14 +51,9 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
     private final Anchor uploadPreview;
 
     private Project project;
-    private ProjectDescription projectDescription;
     private ContactPerson contactPerson;
-    private Company company;
 
     private final ProjectService projectService;
-    private final CompanyService companyService;
-    private final ContactPersonService contactPersonService;
-    private final StudentService studentService;
 
     private final TextField projectTitle;
     private final TextArea projectSketch;
@@ -68,9 +63,9 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
     private Student groupMemberTwo;
     private Student groupMemberThree;
 
-    private Select<String> selectContact;
+    private final Select<String> selectContact;
 
-    private TextField groupMemberThreeName;
+    private final TextField groupMemberThreeName;
 
     public StudentNewProjectForm(ProjectService projectService,
                                  CompanyService companyService,
@@ -78,9 +73,6 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
                                  StudentService studentService){
 
         this.projectService = projectService;
-        this.companyService = companyService;
-        this.contactPersonService = contactPersonService;
-        this.studentService = studentService;
 
 
         /*-----------------------------------------------------------------------------------------------------------
@@ -167,7 +159,6 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
 
         TextField groupMemberOneFhMail = new TextField();
         groupMemberOneFhMail.setLabel("Fh-Mail Gruppenmitglied 1");
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
         groupMemberOne = studentService.getStudentByUsername();
         groupMemberOneFhMail.setValue(groupMemberOne.getFhMail());
         groupMemberOneFhMail.setReadOnly(true);
@@ -274,9 +265,7 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
         Button buttonSave = new Button("Speichern");
         buttonSave.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonSave.setClassName("student-new-project-form-button");
-        buttonSave.addClickListener(saveContactEvent -> {
-            saveEvent();
-        });
+        buttonSave.addClickListener(saveContactEvent -> saveEvent());
 
         Button buttonCancel = new Button("Abbrechen");
         buttonCancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -306,15 +295,6 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
         moduleText.setText("Modul: " + project.getModule());
     }
 
-    public Select<String> getSelectContact() {
-        return selectContact;
-    }
-
-    public void setSelectContact() {
-        this.selectContact.clear();
-        this.selectContact.setItems(contactPersonService.getAllContactPersonNames());
-    }
-
     private void saveEvent(){
         if(projectTitle.getValue() == null
                 || projectSketch.getValue() == null
@@ -326,7 +306,7 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
             NotificationError notification = NotificationError.show("Bitte alle Felder ausfüllen");
         }
         else{
-            this.projectDescription = new ProjectDescription(
+            ProjectDescription projectDescription = new ProjectDescription(
                     projectTitle.getValue(),
                     projectSketch.getValue(),
                     projectBackground.getValue(),
@@ -341,7 +321,7 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
             }
             Set<Student> studentSet = new HashSet<>(studentList);
 
-            project.setProjectDescription(this.projectDescription);
+            project.setProjectDescription(projectDescription);
             project.setStudents(studentSet);
             project.setContactPerson(contactPerson);
 
@@ -349,12 +329,7 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
 
             projectService.saveProject(project);
 
-            Notification notification = Notification.show(
-                    "Der Projektantrag wurde erfolgreich abgesendet",
-                    5000,
-                    Notification.Position.BOTTOM_START
-            );
-            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            NotificationSuccess notificationSuccess = NotificationSuccess.show("Der Projektantrag wurde erfolgreich abgesendet");
 
             UI.getCurrent().navigate(StudentProjectOverview.class);
         }

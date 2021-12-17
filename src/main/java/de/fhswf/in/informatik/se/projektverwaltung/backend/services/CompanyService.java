@@ -34,15 +34,20 @@ public class CompanyService {
         return repository.getById(id);
     }
 
+    public Company getCompanyByCompanyName(String companyName){
+        return repository.getCompanyByCompanyName(companyName);
+    }
+
+    /**
+     * Gibt alle Namen der gespeicherten Unternehmen als Liste zurück
+     *
+     * @return Liste aus den Namen der Unternehmen
+     */
     public List<String> getAllCompanyNames(){
         List<String> companyNames = new ArrayList<>();
         for(Company company : repository.findAll()){
             companyNames.add(company.getCompanyName());
         }
         return companyNames;
-    }
-
-    public Company getCompanyByCompanyName(String companyName){
-        return repository.getCompanyByCompanyName(companyName);
     }
 }

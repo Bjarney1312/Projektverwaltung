@@ -27,3 +27,13 @@
 .dozent-project-overview-radio{
     margin-left: 145px;
 }
+
+.dozent-project-overview-freeprojects{
+
+}
+
+.dozent-project-overview-trash{
+    margin-top: -2px;
+    margin-left: -1px;
+    color: red;
+}

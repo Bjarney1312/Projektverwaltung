@@ -8,6 +8,10 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
@@ -23,6 +27,7 @@ import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ModuleCoordi
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent.AddAppointmentsDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent.AddFreeProjectsDialog;
+import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.dozent.DeleteFreeProjectsDialog;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.MainView;
 
 import java.util.ArrayList;
@@ -90,18 +95,39 @@ public class DozentProjectOverview extends VerticalLayout {
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.setItems(projectService.getAllProjectsWithoutEmpty(moduleCoordinator));
-        grid.getColumns().get(0).setFooter("Freie Projektplätze: " + projectService.getAllProjectsByStatus(moduleCoordinator, Status.FREI).size());
-        projectOption.setValue("Alle Projekte"); //TODO ???
+
+        HorizontalLayout gridFooterLayout = new HorizontalLayout();
+
+        Label freeProjectsLabel = new Label();
+        freeProjectsLabel.setText("Freie Projektplätze: " +  projectService.getAllProjectsByStatus(moduleCoordinator, Status.FREI).size());
+        freeProjectsLabel.setClassName("dozent-project-overview-freeprojects");
+
+        Button deleteFreeProjectButton = new Button();
+        deleteFreeProjectButton.setIcon(new Icon(VaadinIcon.TRASH));
+        deleteFreeProjectButton.setVisible(false);
+        deleteFreeProjectButton.setClassName("dozent-project-overview-trash");
+        deleteFreeProjectButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+        deleteFreeProjectButton.addClickListener(e -> {
+            DeleteFreeProjectsDialog deleteProjects = new DeleteFreeProjectsDialog(moduleCoordinator, projectService, selectModule.getValue());
+            deleteProjects.open();
+        });
+
+        gridFooterLayout.add(deleteFreeProjectButton, freeProjectsLabel);
+
+        grid.getColumns().get(0).setFooter(gridFooterLayout);
 
 
+        projectOption.setValue("Alle Projekte");
 
         selectModule.addValueChangeListener(e -> {
             if (e.getValue().equals("Alle Module")) {
                 grid.setItems(projectService.getAllProjectsWithoutEmpty(moduleCoordinator));
-                grid.getColumns().get(0).setFooter("Freie Projektplätze: " + projectService.getAllProjectsByStatus(moduleCoordinator, Status.FREI).size());
+                freeProjectsLabel.setText("Freie Projektplätze: " + projectService.getAllProjectsByStatus(moduleCoordinator, Status.FREI).size());
+                deleteFreeProjectButton.setVisible(false);
             } else {
                 grid.setItems(projectService.getAllByModuleAndStatusNot(e.getValue()));
-                grid.getColumns().get(0).setFooter("Freie Projektplätze: " + projectService.getAllByStatusAndModule(Status.FREI, e.getValue()).size());
+                freeProjectsLabel.setText("Freie Projektplätze: " + projectService.getAllByStatusAndModule(Status.FREI, e.getValue()).size());
+                deleteFreeProjectButton.setVisible(true);
             }
             projectOption.setValue("Alle Projekte");
         });
@@ -157,9 +183,8 @@ public class DozentProjectOverview extends VerticalLayout {
         buttonProjectDetails.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonProjectDetails.setClassName("dozent-projekt-overview-button");
         buttonProjectDetails.setEnabled(false);
-        buttonProjectDetails.addClickListener(updateProjectEvent -> {
-            UI.getCurrent().navigate(DozentProjectDetails.class, new RouteParameters("projectid", projectId.toString()));
-        });
+        buttonProjectDetails.addClickListener(updateProjectEvent -> UI.getCurrent().navigate(DozentProjectDetails.class,
+                new RouteParameters("projectid", projectId.toString())));
 
         Button buttonNewProjects = new Button("Projekte vergeben");
         buttonNewProjects.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -184,13 +209,7 @@ public class DozentProjectOverview extends VerticalLayout {
                     else{
                         buttonProjectDetails.setText("Projekt ansehen");
                     }
-
-                    if(project.getStatus().equals(Status.ZUGELASSEN)){
-                        buttonNewAppointment.setEnabled(true);
-                    }
-                    else{
-                        buttonNewAppointment.setEnabled(false);
-                    }
+                    buttonNewAppointment.setEnabled(project.getStatus().equals(Status.ZUGELASSEN));
                 });
             }
         });

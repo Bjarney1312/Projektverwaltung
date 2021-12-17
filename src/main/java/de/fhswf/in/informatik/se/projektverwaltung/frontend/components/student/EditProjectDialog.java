@@ -16,26 +16,26 @@ import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import com.vaadin.flow.server.StreamResource;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Project;
-import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Student;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.valueobjects.ProjectDescription;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationError;
-import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationPrimary;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.components.NotificationSuccess;
-import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.student.StudentProjectOverview;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
+/**
+ * Die Klasse EditProjectDialog öffnet in der View zum Ansehen der Projektdetails für
+ * Studenten einen Dialog zum Bearbeiten der Projektangaben, wenn der Status des
+ * Projekts auf "Ergänzung" steht. In dem Dialog werden die Felder automatisch mit den
+ * bisherigen Daten gefüllt und der Student kann diese bei Bedarf ändern.
+ *
+ * @author Ivonne Kneißig & Ramon Günther
+ */
 @CssImport("/themes/projektverwaltung/components/student/edit-project-form.css")
 public class EditProjectDialog extends Dialog {
 
-    private final ProjectService projectService;
     private byte[] pdfByte;
     private final Anchor uploadPreview;
     private final TextField projectTitle;
@@ -43,8 +43,6 @@ public class EditProjectDialog extends Dialog {
     private final TextArea projectBackground;
 
     public EditProjectDialog(ProjectService projectService, Project project){
-
-        this.projectService = projectService;
 
         setWidth("1000px");
         setCloseOnEsc(false);

@@ -3,6 +3,12 @@ package de.fhswf.in.informatik.se.projektverwaltung.frontend.components;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 
+/**
+ * Die Klasse NotificationSuccess ist eine Notification für
+ * eine Erfolgreiche Aktion.
+ *
+ * @author Ivonne Kneißig & Ramon Günther
+ */
 public class NotificationSuccess extends Notification {
 
     public NotificationSuccess(){

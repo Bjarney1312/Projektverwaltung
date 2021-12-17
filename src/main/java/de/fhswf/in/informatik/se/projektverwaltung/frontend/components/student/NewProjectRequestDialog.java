@@ -12,7 +12,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.RouteParameters;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.ModuleEnum;
-import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.enums.Status;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.services.ProjectService;
 import de.fhswf.in.informatik.se.projektverwaltung.frontend.views.student.StudentNewProjectForm;
 

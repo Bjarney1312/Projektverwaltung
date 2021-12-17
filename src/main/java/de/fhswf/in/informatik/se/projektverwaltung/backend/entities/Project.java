@@ -110,10 +110,6 @@ public class Project {
 		this.status = status;
 	}
 
-	public void setPresentationDates(PresentationDates presentationDates) {
-		this.presentationDates = presentationDates;
-	}
-
 	public void setContactPerson(ContactPerson contactPerson) {
 		this.contactPerson = contactPerson;
 	}

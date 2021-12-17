@@ -70,6 +70,8 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
 
     private Select<String> selectContact;
 
+    private TextField groupMemberThreeName;
+
     public StudentNewProjectForm(ProjectService projectService,
                                  CompanyService companyService,
                                  ContactPersonService contactPersonService,
@@ -166,7 +168,7 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
         TextField groupMemberOneFhMail = new TextField();
         groupMemberOneFhMail.setLabel("Fh-Mail Gruppenmitglied 1");
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        groupMemberOne = studentService.getStudentByUsername(name);
+        groupMemberOne = studentService.getStudentByUsername();
         groupMemberOneFhMail.setValue(groupMemberOne.getFhMail());
         groupMemberOneFhMail.setReadOnly(true);
 
@@ -202,7 +204,7 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
         groupMemberThreeFhMail.setLabel("Name");
         groupMemberThreeFhMail.setReadOnly(true);
 
-        TextField groupMemberThreeName = new TextField();
+        groupMemberThreeName = new TextField();
         groupMemberThreeName.setLabel("FH-Mail Gruppenmitglied 3");
         groupMemberThreeName.setPlaceholder("FH-Mail");
         groupMemberThreeName.addValueChangeListener(event -> {
@@ -273,49 +275,7 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
         buttonSave.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonSave.setClassName("student-new-project-form-button");
         buttonSave.addClickListener(saveContactEvent -> {
-
-            if(projectTitle.getValue() == null
-                    || projectSketch.getValue() == null
-                    || projectBackground.getValue() == null
-                    || pdfByte == null
-                    || groupMemberTwo == null
-                    || contactPerson == null
-            ){
-                NotificationError notification = NotificationError.show("Bitte alle Felder ausfüllen");
-            }
-            else{
-                this.projectDescription = new ProjectDescription(
-                        projectTitle.getValue(),
-                        projectSketch.getValue(),
-                        projectBackground.getValue(),
-                        pdfByte
-                );
-
-                List<Student> studentList = new ArrayList<>();
-                studentList.add(groupMemberOne);
-                studentList.add(groupMemberTwo);
-                if(!groupMemberThreeName.isEmpty()){
-                    studentList.add(groupMemberThree);
-                }
-                Set<Student> studentSet = new HashSet<>(studentList);
-
-                project.setProjectDescription(this.projectDescription);
-                project.setStudents(studentSet);
-                project.setContactPerson(contactPerson);
-
-                project.setStatus(Status.ANFRAGE);
-
-                projectService.saveProject(project);
-
-                Notification notification = Notification.show(
-                        "Der Projektantrag wurde erfolgreich abgesendet",
-                        5000,
-                        Notification.Position.BOTTOM_START
-                );
-                notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-
-                UI.getCurrent().navigate(StudentProjectOverview.class);
-            }
+            saveEvent();
         });
 
         Button buttonCancel = new Button("Abbrechen");
@@ -353,5 +313,50 @@ public class StudentNewProjectForm extends VerticalLayout implements BeforeEnter
     public void setSelectContact() {
         this.selectContact.clear();
         this.selectContact.setItems(contactPersonService.getAllContactPersonNames());
+    }
+
+    private void saveEvent(){
+        if(projectTitle.getValue() == null
+                || projectSketch.getValue() == null
+                || projectBackground.getValue() == null
+                || pdfByte == null
+                || groupMemberTwo == null
+                || contactPerson == null
+        ){
+            NotificationError notification = NotificationError.show("Bitte alle Felder ausfüllen");
+        }
+        else{
+            this.projectDescription = new ProjectDescription(
+                    projectTitle.getValue(),
+                    projectSketch.getValue(),
+                    projectBackground.getValue(),
+                    pdfByte
+            );
+
+            List<Student> studentList = new ArrayList<>();
+            studentList.add(groupMemberOne);
+            studentList.add(groupMemberTwo);
+            if(!groupMemberThreeName.isEmpty()){
+                studentList.add(groupMemberThree);
+            }
+            Set<Student> studentSet = new HashSet<>(studentList);
+
+            project.setProjectDescription(this.projectDescription);
+            project.setStudents(studentSet);
+            project.setContactPerson(contactPerson);
+
+            project.setStatus(Status.ANFRAGE);
+
+            projectService.saveProject(project);
+
+            Notification notification = Notification.show(
+                    "Der Projektantrag wurde erfolgreich abgesendet",
+                    5000,
+                    Notification.Position.BOTTOM_START
+            );
+            notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+
+            UI.getCurrent().navigate(StudentProjectOverview.class);
+        }
     }
 }

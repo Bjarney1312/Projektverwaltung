@@ -1,0 +1,46 @@
+.main-layout-title {
+    margin-left: 60px;
+    font-size: x-large;
+    color: white;
+}
+
+.header{
+    background: hsl(214, 90%, 60%) ;
+    display: grid;
+    grid-template-areas: "a b";
+}
+
+.user{
+    color: white;
+    font-size: large;
+    margin-top: 33px;
+    margin-left: 50px;
+}
+
+.switch-theme{
+    color: white;
+    margin-top: 18px;
+    font-size: large;
+}
+
+.btnlogout{
+    margin-top: 18px;
+    color: white;
+    font-size: large;
+}
+
+.btnBox{
+    grid-area: b;
+    justify-self: end;
+    margin-right: 60px;
+}
+
+.welcome{
+    grid-area: a;
+}
+
+.academycap{
+    color: white;
+    margin-top: 33px;
+    margin-right: -30px;
+}

@@ -55,8 +55,7 @@ public class StudentProjectOverview extends VerticalLayout {
         grid.addThemeVariants(GridVariant.LUMO_WRAP_CELL_CONTENT);
         grid.setClassName("student-project-overview-grid");
 
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Student student = studentService.getStudentByUsername(username);
+        Student student = studentService.getStudentByUsername();
 
         grid.setItems(this.projectService.getAllProjectsByStudents(student));
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
@@ -71,9 +70,7 @@ public class StudentProjectOverview extends VerticalLayout {
                 contactPerson.getContactPerson().getLastName()
                         + ", " + contactPerson.getContactPerson().getFirstName()).setHeader("Ansprechpartner");
 
-
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-
 
         Button buttonNewProject = new Button("Projektvorschlag");
         buttonNewProject.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -92,17 +89,6 @@ public class StudentProjectOverview extends VerticalLayout {
         buttonProjectDetails.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         buttonProjectDetails.setClassName("student-projekt-overview-button");
         buttonProjectDetails.addClickListener(projectDetailsEvent -> {
-
-            //TODO: Variante 2
-//            if(grid.getSelectedItems().isEmpty()){
-//                Notification notification = Notification.show(
-//                        "Es wurde keine Zeile ausgewählt!",
-//                        5000,
-//                        Notification.Position.BOTTOM_START
-//                );
-//                notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
-//                return;
-//            }
             List<Project> projectList= new ArrayList<>(grid.getSelectedItems());
             UI.getCurrent().navigate(StudentProjectDetails.class, new RouteParameters("projectid", projectId.toString()));
         });

@@ -2,6 +2,7 @@ package de.fhswf.in.informatik.se.projektverwaltung.backend.services;
 
 import de.fhswf.in.informatik.se.projektverwaltung.backend.entities.Student;
 import de.fhswf.in.informatik.se.projektverwaltung.backend.repositories.StudentRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,12 +37,11 @@ public class StudentService {
     /**
      * Die Methode findet einen Studenten anhand seines Benutzernamens.
      *
-     * @param username Benutzername im System
      * @return Student
      */
-    public Student getStudentByUsername(String username){
+    public Student getStudentByUsername(){
         try {
-            return  repository.findStudentByUsername(username);
+            return  repository.findStudentByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         }
         catch(Exception e){
             throw new IllegalArgumentException("Es konnte kein Nutzer mit diesem Nutzernamen gefunden werden.");

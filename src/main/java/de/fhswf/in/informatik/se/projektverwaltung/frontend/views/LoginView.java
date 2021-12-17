@@ -6,6 +6,7 @@ import com.vaadin.flow.router.*;
 
 /**
  * Die Klasse LoginView erstellt den Login der Applikation.
+ * Es wird die Standard-Login-View von Vaadin verwendet.
  *
  * @author Ivonne Kneißig & Ramon Günther
  */

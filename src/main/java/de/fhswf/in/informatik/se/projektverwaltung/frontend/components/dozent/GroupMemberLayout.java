@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 /**
  * Die Klasse GroupMemberLayout erstellt ein HorizontalLayout mit den
  * Namen der Gruppenmitglieder des jeweiligen Projekts, um es in der
- * Tabelle in der Klasse DozentProjectOverView anzeigen zu lassen
+ * Tabelle in der Klasse DozentProjectOverView anzeigen zu lassen.
  *
  * @author Ivonne Kneißig & Ramon Günther
  */

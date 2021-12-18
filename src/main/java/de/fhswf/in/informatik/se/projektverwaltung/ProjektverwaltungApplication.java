@@ -147,7 +147,10 @@ public class ProjektverwaltungApplication {
 
         ContactPerson contactPerson3 = contactPersonRepository.getById(3L);
         project3.setContactPerson(contactPerson3);
-        project3.setProjectDescription(projectDescription);
+
+        ProjectDescription projectDescription1 = new ProjectDescription("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna ","Krasse Skizze","Krasse Beschreibung",null);
+
+        project3.setProjectDescription(projectDescription1);
         project3.setStatus(Status.ZUGELASSEN);
         projectRepository.save(project3);
 

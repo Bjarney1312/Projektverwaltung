@@ -96,9 +96,14 @@ public class DozentProjectOverview extends VerticalLayout {
 
         grid.addColumn(createToggleDetailsRenderer(grid));
 
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        grid.getColumns().get(0).setWidth("200");
+        grid.getColumns().get(0).setWidth("200px");
+        grid.getColumns().get(1).setWidth("200px");
+        grid.getColumns().get(2).setWidth("150px");
+        grid.getColumns().get(3).setWidth("180px");
+        grid.getColumns().get(4).setWidth("250px");
+
         grid.setItems(projectService.getAllProjectsWithoutEmpty(moduleCoordinator));
+
 
         HorizontalLayout gridFooterLayout = new HorizontalLayout();
 

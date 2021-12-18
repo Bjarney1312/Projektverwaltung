@@ -54,7 +54,6 @@ public class StudentProjectOverview extends VerticalLayout {
         Student student = studentService.getStudentByUsername();
 
         grid.setItems(this.projectService.getAllProjectsByStudents(student));
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.addColumn(projectTitle -> projectTitle.getProjectDescription().getTitle()).setHeader("Projekttitel").setResizable(true);
 
         grid.addColumn(Project::getModule).setHeader("Modul");
@@ -68,6 +67,12 @@ public class StudentProjectOverview extends VerticalLayout {
                         + ", " + contactPerson.getContactPerson().getFirstName()).setHeader("Ansprechpartner");
 
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+
+        grid.getColumns().get(0).setWidth("200px");
+        grid.getColumns().get(1).setWidth("200px");
+        grid.getColumns().get(2).setWidth("150px");
+        grid.getColumns().get(3).setWidth("180px");
+        grid.getColumns().get(4).setWidth("250px");
 
         Button buttonNewProject = new Button("Projektvorschlag");
         buttonNewProject.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

@@ -16,7 +16,7 @@
     padding-left: 50px;
     padding-bottom: 40px;
     margin-top: 30px;
-    padding-right: 20px; /* TODO: hab ich hinzugefügt und dadurch is es nciht mehr perfekt mittig also die Buttons */
+    padding-right: 20px;
 }
 
 .project-details-contacteditlayout {
@@ -30,7 +30,6 @@
 }
 
 .project-details-projecttitle{
-    /* die größe hat gar nichts verändert */
     word-wrap: break-word;
 }
 
